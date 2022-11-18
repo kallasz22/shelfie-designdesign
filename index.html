@@ -22,13 +22,17 @@
 
 <!-- adott html fájl betöltése ha a gombokra kattintanak -->
 <script>
+    //variables
+    const main = document.querySelector('main');
+
     function loadHTML(page) {
+        main.innerHTML = '<main>Loading...</main>';
         fetch(`/comp/${page}.html`)
         .then(function (res) {
             return res.text();
         })
         .then(function (text) {
-            document.querySelector('main').innerHTML = text;
+            main.innerHTML = text;
         });
     }
 </script>
