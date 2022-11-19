@@ -8,50 +8,54 @@
 </head>
 <body>
     <header>
-        <img src="/img/MenuClosed.svg" alt="" id="menu-closed" onclick="menu(this, document.querySelector('#menu-bg'))">
+        <img src="/img/MenuClosed.svg" alt="" id="menu-closed" onclick="menu(this, document.querySelector('#menu-bg'), document.querySelector('#menu'))">
         <h2>SHELFIE</h2>
 
         <div id="menu-bg">
             <div id="menu">
-                <button onclick="loadHTML('dashboard')">Dashboard</button>
-                <button onclick="loadHTML('features')">Features</button>
-                <button onclick="loadHTML('feedback')">Feedback</button>
-                <button onclick="loadHTML('homepage')">Homepage</button>
+                <button onclick="loadHTML('dashboard'); menu(document.querySelector('#menu-opened'), document.querySelector('#menu-bg'), document.querySelector('#menu'))">DASHBOARD</button>
+                <button onclick="loadHTML('features'); menu(document.querySelector('#menu-opened'), document.querySelector('#menu-bg'), document.querySelector('#menu'))">FEATURES</button>
+                <button onclick="loadHTML('feedback'); menu(document.querySelector('#menu-opened'), document.querySelector('#menu-bg'), document.querySelector('#menu'))">FEEDBACK</button>
+                <button onclick="loadHTML('homepage'); menu(document.querySelector('#menu-opened'), document.querySelector('#menu-bg'), document.querySelector('#menu'))">HOMEPAGE</button>
             </div>
         </div>
         
     </header>
-    <main>
+    
+    <div id="render">
 
-    </main>
+    </div>
 </body>
 
 <!-- adott html fájl betöltése ha a gombokra kattintanak -->
 <script>
     //variables
-    const main = document.querySelector('main');
+    const render = document.querySelector('#render');
 
     function loadHTML(page) {
-        main.innerHTML = '<main>Loading...</main>';
+        render.innerHTML = '<main>Loading...</main>';
         fetch(`/comp/${page}.html`)
         .then(function (res) {
             return res.text();
         })
         .then(function (text) {
-            main.innerHTML = text;
+            render.innerHTML = text;
         });
-        window.history.pushState("", "", `?${page}`)
+        window.history.pushState("", "", `?${page}`);
     }
 
-    function menu(img, menu) {
+    function menu(img, _bg, menu) {
         if (img.id == 'menu-closed') {
             img.id = 'menu-opened';
             img.src = '/img/MenuOpened.svg';
-            menu.style.display = 'block';
+            _bg.style.animation = 'menubgIN 0.25s forwards';
+            menu.style.animation = 'menuIN 0.25s forwards';
         } else {
             img.id = 'menu-closed';
             img.src = '/img/MenuClosed.svg';
-            menu.style.display = 'none';
+            _bg.style.animation = 'menubgOUT 0.25s forwards';
+            menu.style.animation = 'menuOUT 0.25s forwards';
+            
         }
     }
 
@@ -103,8 +107,7 @@
         height: var(--main-height);
     }
     #menu-bg {
-        display: none;
-        background-color: rgba(0, 0, 0, 0.245);
+        background-color: transparent;
         height: calc(100vh - 3em);
         width: 100vw;
         position: fixed;
@@ -117,19 +120,53 @@
         position: fixed;
         top: 3em;
         left: 0px;
-        width: 250px;
+        max-width: 250px;
+        left: -250px;
+    }
+    #menu button {
+        width: 100%;
+        border: unset;
+        background-color: unset;
+        border-radius: unset;
+        padding: 10px 0px 10px 20px;
+        text-align: left;
+        font-size: 12pt;
+    }
+    #menu button:hover {
+        background-color: rgba(0, 0, 0, 0.145);
+        cursor: pointer;
     }
     @keyframes menuIN {
-        
+        0% {
+            left: -250px;
+        }
+        100% {
+            left: 0px;
+        }
     }
     @keyframes menuOUT {
-        
+        0% {
+            left: 0px;
+        }
+        100% {
+            left: -250px;
+        }
     }
     @keyframes menubgIN {
-        
+        0% {
+            background-color: transparent;
+        }
+        100% {
+            background-color: rgba(0, 0, 0, 0.245);
+        }
     }
     @keyframes menubgOUT {
-        
+        0% {
+            background-color: rgba(0, 0, 0, 0.245);
+        }
+        100% {
+            background-color: transparent;
+        }
     }
 </style>
 </html>
