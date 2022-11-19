@@ -48,6 +48,7 @@
         if (img.id == 'menu-closed') {
             img.id = 'menu-opened';
             img.src = '/img/MenuOpened.svg';
+            _bg.style.display = 'block';
             _bg.style.animation = 'menubgIN 0.25s forwards';
             menu.style.animation = 'menuIN 0.25s forwards';
         } else {
@@ -55,7 +56,9 @@
             img.src = '/img/MenuClosed.svg';
             _bg.style.animation = 'menubgOUT 0.25s forwards';
             menu.style.animation = 'menuOUT 0.25s forwards';
-            
+            setTimeout(function(){
+                _bg.style.display = 'none';
+            }, 250);
         }
     }
 
@@ -90,7 +93,7 @@
         gap: 10px;
         padding: 0px 20px;
         position: sticky;
-        top: 0;
+        top: 0px;
     }
     header h2 {
         margin: 0px;
@@ -113,6 +116,7 @@
         position: fixed;
         top: 3em;
         left: 0px;
+        display: none;
     }
     #menu {
         height: 100%;
