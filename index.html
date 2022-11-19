@@ -11,8 +11,8 @@
         <img src="/img/MenuClosed.svg" alt="" id="menu-closed" onclick="menu(this, document.querySelector('#menu-bg'), document.querySelector('#menu'))">
         <h2>SHELFIE</h2>
 
-        <div id="menu-bg">
-            <div id="menu">
+        <div id="menu-bg" onclick="menu(document.querySelector('#menu-opened'), document.querySelector('#menu-bg'), document.querySelector('#menu'))">
+            <div id="menu" onclick="event.cancelBubble=true">
                 <button onclick="loadHTML('dashboard'); menu(document.querySelector('#menu-opened'), document.querySelector('#menu-bg'), document.querySelector('#menu'))">DASHBOARD</button>
                 <button onclick="loadHTML('features'); menu(document.querySelector('#menu-opened'), document.querySelector('#menu-bg'), document.querySelector('#menu'))">FEATURES</button>
                 <button onclick="loadHTML('feedback'); menu(document.querySelector('#menu-opened'), document.querySelector('#menu-bg'), document.querySelector('#menu'))">FEEDBACK</button>
