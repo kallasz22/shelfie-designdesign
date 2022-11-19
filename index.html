@@ -8,14 +8,16 @@
 </head>
 <body>
     <header>
-        <img src="/img/MenuClosed.svg" alt="" id="menu-closed" onclick="menu(this, document.querySelector('#menu'))">
+        <img src="/img/MenuClosed.svg" alt="" id="menu-closed" onclick="menu(this, document.querySelector('#menu-bg'))">
         <h2>SHELFIE</h2>
 
-        <div id="menu">
-            <button onclick="loadHTML('dashboard')">Dashboard</button>
-            <button onclick="loadHTML('features')">Features</button>
-            <button onclick="loadHTML('feedback')">Feedback</button>
-            <button onclick="loadHTML('homepage')">Homepage</button>
+        <div id="menu-bg">
+            <div id="menu">
+                <button onclick="loadHTML('dashboard')">Dashboard</button>
+                <button onclick="loadHTML('features')">Features</button>
+                <button onclick="loadHTML('feedback')">Feedback</button>
+                <button onclick="loadHTML('homepage')">Homepage</button>
+            </div>
         </div>
         
     </header>
@@ -38,18 +40,25 @@
         .then(function (text) {
             main.innerHTML = text;
         });
+        window.history.pushState("", "", `?${page}`)
     }
 
     function menu(img, menu) {
         if (img.id == 'menu-closed') {
             img.id = 'menu-opened';
             img.src = '/img/MenuOpened.svg';
-            menu.style.display = 'flex';
+            menu.style.display = 'block';
         } else {
             img.id = 'menu-closed';
             img.src = '/img/MenuClosed.svg';
             menu.style.display = 'none';
         }
+    }
+
+    if (location.search.slice(1) == "") {
+        loadHTML('homepage');
+    } else {
+        loadHTML(location.search.slice(1));
     }
 </script>
 
@@ -76,6 +85,8 @@
         align-items: center;
         gap: 10px;
         padding: 0px 20px;
+        position: sticky;
+        top: 0;
     }
     header h2 {
         margin: 0px;
@@ -91,11 +102,34 @@
     main {
         height: var(--main-height);
     }
+    #menu-bg {
+        display: none;
+        background-color: rgba(0, 0, 0, 0.245);
+        height: calc(100vh - 3em);
+        width: 100vw;
+        position: fixed;
+        top: 3em;
+        left: 0px;
+    }
     #menu {
         height: 100%;
-        display: none;
+        background-color: white;
+        position: fixed;
+        top: 3em;
+        left: 0px;
+        width: 250px;
+    }
+    @keyframes menuIN {
+        
+    }
+    @keyframes menuOUT {
+        
+    }
+    @keyframes menubgIN {
+        
+    }
+    @keyframes menubgOUT {
+        
     }
 </style>
 </html>
-
-
