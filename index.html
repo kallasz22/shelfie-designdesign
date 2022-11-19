@@ -8,17 +8,21 @@
 </head>
 <body>
     <header>
-        <button onclick="loadHTML('dashboard')">Dashboard</button>
-        <button onclick="loadHTML('features')">Features</button>
-        <button onclick="loadHTML('feedback')">Feedback</button>
-        <button onclick="loadHTML('homepage')">Homepage</button>
+        <img src="/img/MenuClosed.svg" alt="" id="menu-closed" onclick="menu(this, document.querySelector('#menu'))">
+        <h2>SHELFIE</h2>
+
+        <div id="menu">
+            <button onclick="loadHTML('dashboard')">Dashboard</button>
+            <button onclick="loadHTML('features')">Features</button>
+            <button onclick="loadHTML('feedback')">Feedback</button>
+            <button onclick="loadHTML('homepage')">Homepage</button>
+        </div>
+        
     </header>
     <main>
 
     </main>
 </body>
-</html>
-
 
 <!-- adott html fájl betöltése ha a gombokra kattintanak -->
 <script>
@@ -35,4 +39,63 @@
             main.innerHTML = text;
         });
     }
+
+    function menu(img, menu) {
+        if (img.id == 'menu-closed') {
+            img.id = 'menu-opened';
+            img.src = '/img/MenuOpened.svg';
+            menu.style.display = 'flex';
+        } else {
+            img.id = 'menu-closed';
+            img.src = '/img/MenuClosed.svg';
+            menu.style.display = 'none';
+        }
+    }
 </script>
+
+<!-- styling the page -->
+<style>
+    :root {
+        --main-height: calc(100vh - 3em)
+    }
+    @font-face {
+        font-family: 'Lexend';
+        src: url('/Lexend-Regular.ttf');
+    }
+    html * {/*applying font to all html element*/
+        font-family: 'Lexend';
+    }
+    body {
+        margin: 0px;
+        height: 100vh;
+    }
+    header {
+        height: 3em;
+        background-color: #00b9dc;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 0px 20px;
+    }
+    header h2 {
+        margin: 0px;
+        color: white;
+    }
+    header img {
+        height: 1.5em;
+        filter: invert();
+    }
+    header img:hover {
+        cursor: pointer;
+    }
+    main {
+        height: var(--main-height);
+    }
+    #menu {
+        height: 100%;
+        display: none;
+    }
+</style>
+</html>
+
+
