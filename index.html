@@ -41,7 +41,13 @@
         .then(function (text) {
             render.innerHTML = text;
         });
-        window.history.pushState("", "", `?${page}`);
+        window.history.pushState({}, "", `?${page}`);
+        if (page == "homepage") {
+            document.title = 'SHELFIE - Book organizer.';
+        } else {
+            const title = page[0].toUpperCase() + page.slice(1);
+            document.title = `${title} - SHELFIE`;
+        }
     }
 
     function menu(img, _bg, menu) {
