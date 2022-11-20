@@ -13,10 +13,15 @@
 
         <div id="menu-bg" onclick="menu(document.querySelector('#menu-opened'), document.querySelector('#menu-bg'), document.querySelector('#menu'))">
             <div id="menu" onclick="event.cancelBubble=true">
-                <button onclick="loadHTML('dashboard'); menu(document.querySelector('#menu-opened'), document.querySelector('#menu-bg'), document.querySelector('#menu'))">DASHBOARD</button>
-                <button onclick="loadHTML('features'); menu(document.querySelector('#menu-opened'), document.querySelector('#menu-bg'), document.querySelector('#menu'))">FEATURES</button>
-                <button onclick="loadHTML('feedback'); menu(document.querySelector('#menu-opened'), document.querySelector('#menu-bg'), document.querySelector('#menu'))">FEEDBACK</button>
-                <button onclick="loadHTML('homepage'); menu(document.querySelector('#menu-opened'), document.querySelector('#menu-bg'), document.querySelector('#menu'))">HOMEPAGE</button>
+                <div id="upper-group">
+                    <button onclick="loadHTML('dashboard'); menu(document.querySelector('#menu-opened'), document.querySelector('#menu-bg'), document.querySelector('#menu'))">DASHBOARD</button>
+                    <button onclick="loadHTML('features'); menu(document.querySelector('#menu-opened'), document.querySelector('#menu-bg'), document.querySelector('#menu'))">FEATURES</button>
+                    <button onclick="loadHTML('feedback'); menu(document.querySelector('#menu-opened'), document.querySelector('#menu-bg'), document.querySelector('#menu'))">FEEDBACK</button>
+                    <button onclick="loadHTML('homepage'); menu(document.querySelector('#menu-opened'), document.querySelector('#menu-bg'), document.querySelector('#menu'))">HOMEPAGE</button>
+                </div>
+                <div id="downer-group">
+                    <p id="tested-browsers">Tested browsers: Mozilla Firefox</p>
+                </div>
             </div>
         </div>
         
@@ -27,7 +32,7 @@
     </div>
 </body>
 
-<!-- adott html fájl betöltése ha a gombokra kattintanak -->
+<!-- adott html fájl betöltése ha a gombokra kattintanak (meg minden más is mostmár) -->
 <script>
     //variables
     const render = document.querySelector('#render');
@@ -125,7 +130,7 @@
         display: none;
     }
     #menu {
-        height: 100%;
+        height: calc(100vh - 3em);
         background-color: white;
         position: fixed;
         top: 3em;
@@ -133,6 +138,10 @@
         max-width: 250px;
         left: -250px;
         padding: 10px 0px 0px 0px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        box-sizing: border-box;
     }
     #menu button {
         width: 100%;
@@ -146,6 +155,11 @@
     #menu button:hover {
         background-color: rgba(0, 0, 0, 0.145);
         cursor: pointer;
+    }
+    #tested-browsers {
+        font-size: 10pt;
+        color: grey;
+        text-align: center;
     }
     @keyframes menuIN {
         0% {
