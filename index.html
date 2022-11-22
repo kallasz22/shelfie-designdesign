@@ -14,13 +14,17 @@
         <div id="menu-bg" onclick="menu(document.querySelector('#menu-opened'), document.querySelector('#menu-bg'), document.querySelector('#menu'))">
             <div id="menu" onclick="event.cancelBubble=true">
                 <div id="upper-group">
+                    <button onclick="loadHTML('homepage'); menu(document.querySelector('#menu-opened'), document.querySelector('#menu-bg'), document.querySelector('#menu'))"><img src="/img/House.svg" alt="" class="menu-img">HOMEPAGE</button>
                     <button onclick="loadHTML('dashboard'); menu(document.querySelector('#menu-opened'), document.querySelector('#menu-bg'), document.querySelector('#menu'))">DASHBOARD</button>
-                    <button onclick="loadHTML('features'); menu(document.querySelector('#menu-opened'), document.querySelector('#menu-bg'), document.querySelector('#menu'))">FEATURES</button>
-                    <button onclick="loadHTML('feedback'); menu(document.querySelector('#menu-opened'), document.querySelector('#menu-bg'), document.querySelector('#menu'))">FEEDBACK</button>
-                    <button onclick="loadHTML('homepage'); menu(document.querySelector('#menu-opened'), document.querySelector('#menu-bg'), document.querySelector('#menu'))">HOMEPAGE</button>
                 </div>
                 <div id="downer-group">
-                    <p id="tested-browsers">Tested browsers: Mozilla Firefox</p>
+                    <button onclick="loadHTML('feedback'); menu(document.querySelector('#menu-opened'), document.querySelector('#menu-bg'), document.querySelector('#menu'))">FEEDBACK</button>
+                    <button onclick="loadHTML('features'); menu(document.querySelector('#menu-opened'), document.querySelector('#menu-bg'), document.querySelector('#menu'))">FEATURES</button>
+                    <button>PRIVACY POLICY</button>
+                    <button>TERMS OF SERVICE</button>
+                    <button onclick="window.open('https://github.com/kallasz22/shelfie')">GITHUB</button>
+                    <p id="tested-browsers" class="header-down-p">Tested browsers:<br> Mozilla Firefox, Vivaldi</p>
+                    <!-- <p id="made" class="header-down-p">Made with 💚 in Hungary.</p> -->
                 </div>
             </div>
         </div>
@@ -112,11 +116,11 @@
         margin: 0px;
         color: white;
     }
-    header img {
+    header>img {
         height: 1.5em;
         filter: invert();
     }
-    header img:hover {
+    header>img:hover {
         cursor: pointer;
     }
     main {
@@ -144,6 +148,7 @@
         flex-direction: column;
         justify-content: space-between;
         box-sizing: border-box;
+        width: 100%;
     }
     #menu button {
         width: 100%;
@@ -153,12 +158,18 @@
         padding: 10px 0px 10px 20px;
         text-align: left;
         font-size: 12pt;
+        display: flex;
+        align-items: center;
+        gap: 5px;
     }
     #menu button:hover {
         background-color: rgba(0, 0, 0, 0.145);
         cursor: pointer;
     }
-    #tested-browsers {
+    .menu-img {
+        height: 15pt;
+    }
+    .header-down-p {
         font-size: 10pt;
         color: grey;
         text-align: center;
