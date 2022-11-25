@@ -10,21 +10,21 @@
 </head>
 <body>
     <header>
-        <img src="/img/MenuClosed.svg" alt="" id="menu-img" onclick="menu(this, document.querySelector('#menu-bg'), document.querySelector('#menu'))">
+        <img src="/img/MenuClosed.svg" alt="" id="menu-img" onclick="menu()">
         <h2>SHELFIE</h2>
 
-        <div id="menu-bg" onclick="menu(document.querySelector('#menu-img'), document.querySelector('#menu-bg'), document.querySelector('#menu'))">
+        <div id="menu-bg" onclick="menu()">
             <div id="menu" onclick="event.cancelBubble=true" state="closed">
                 <div id="upper-group">
                     <div id="z-bg"></div>
-                    <button onclick="loadHTML('homepage'); menu(document.querySelector('#menu-img'), document.querySelector('#menu-bg'), document.querySelector('#menu'))"><img src="/img/House.svg" alt="" class="menu-img">HOMEPAGE</button>
-                    <button onclick="loadHTML('account'); menu(document.querySelector('#menu-img'), document.querySelector('#menu-bg'), document.querySelector('#menu'))"><img src="/img/Account.svg" alt="" class="menu-img">ACCOUNT</button>
-                    <button onclick="loadHTML('library'); menu(document.querySelector('#menu-img'), document.querySelector('#menu-bg'), document.querySelector('#menu'))"><img src="/img/Library.svg" alt="" class="menu-img">LIBRARY</button>
+                    <button onclick="loadHTML('homepage'); menu()"><img src="/img/House.svg" alt="" class="menu-img">HOMEPAGE</button>
+                    <button onclick="loadHTML('account'); menu()"><img src="/img/Account.svg" alt="" class="menu-img">ACCOUNT</button>
+                    <button onclick="loadHTML('library'); menu()"><img src="/img/Library.svg" alt="" class="menu-img">LIBRARY</button>
                 </div>
-                <button onclick="showMore(this, document.querySelector('#downer-group'))" id="more" state="closed">MORE</button>
+                <button onclick="showMore()" id="more" state="closed">MORE</button>
                 <div id="downer-group">
-                    <button onclick="loadHTML('feedback'); menu(document.querySelector('#menu-img'), document.querySelector('#menu-bg'), document.querySelector('#menu'))"><img src="/img/Feedback.svg" alt="" class="menu-img">FEEDBACK</button>
-                    <button onclick="loadHTML('features'); menu(document.querySelector('#menu-img'), document.querySelector('#menu-bg'), document.querySelector('#menu'))">FEATURES</button>
+                    <button onclick="loadHTML('feedback'); menu()"><img src="/img/Feedback.svg" alt="" class="menu-img">FEEDBACK</button>
+                    <button onclick="loadHTML('features'); menu()">FEATURES</button>
                     <button>PRIVACY POLICY</button>
                     <button>TERMS OF SERVICE</button>
                     <button onclick="window.open('https://github.com/kallasz22/shelfie')">GITHUB</button>
@@ -40,9 +40,9 @@
 </body>
 
 <script>
-    const render = document.querySelector('#render');
-
+    
     function loadHTML(page) {
+        const render = document.querySelector('#render');
         render.innerHTML = '<main>Loading...</main>';
         fetch(`/comp/${page}.html`)
         .then(function (res) {
@@ -60,33 +60,43 @@
         }
     }
 
-    function menu(img, _bg, menu) {
+    function menu() {
+        const menu = document.querySelector('#menu');
+        const menu_bg = document.querySelector('#menu-bg');
+        const menu_img = document.querySelector('#menu-img');
+
+        const downerGrp = document.querySelector('#downer-group');
+        const moreBtn = document.querySelector('#more');
+
         if (menu.attributes.state.nodeValue == 'closed') {
             menu.attributes.state.nodeValue = 'opened';
-            img.src = '/img/MenuOpened.svg';
-            _bg.style.display = 'block';
-            _bg.style.animation = 'menubgIN 0.25s forwards';
+            menu_img.src = '/img/MenuOpened.svg';
+            menu_bg.style.display = 'block';
+            menu_bg.style.animation = 'menubgIN 0.25s forwards';
             menu.style.animation = 'menuIN 0.25s forwards';
-            document.querySelector('#downer-group').style.animation = 'moreINs 0.25s forwards';
+            downerGrp.style.animation = 'moreINs 0.25s forwards';
         } else {
             menu.attributes.state.nodeValue = 'closed';
-            img.src = '/img/MenuClosed.svg';
-            _bg.style.animation = 'menubgOUT 0.25s forwards';
+            menu_img.src = '/img/MenuClosed.svg';
+            menu_bg.style.animation = 'menubgOUT 0.25s forwards';
             menu.style.animation = 'menuOUT 0.25s forwards';
-            if (document.querySelector('#more').attributes.state.nodeValue == 'opened') {
-                document.querySelector('#more').attributes.state.nodeValue = 'closed';
-                document.querySelector('#downer-group').style.animation = 'moreOUTs 0.25s forwards';
+            if (moreBtn.attributes.state.nodeValue == 'opened') {
+                moreBtn.attributes.state.nodeValue = 'closed';
+                downerGrp.style.animation = 'moreOUTs 0.25s forwards';
             }
             else {
-                document.querySelector('#downer-group').style.animation = 'moreOUTs2 0.25s forwards';
+                downerGrp.style.animation = 'moreOUTs2 0.25s forwards';
             }
             setTimeout(function(){
-                _bg.style.display = 'none';
+                menu_bg.style.display = 'none';
             }, 250);
         }
     }
 
-    function showMore(moreBtn, downerGrp) {
+    function showMore() {
+        const downerGrp = document.querySelector('#downer-group');
+        const moreBtn = document.querySelector('#more');
+
         if (moreBtn.attributes.state.nodeValue == 'closed') {
             moreBtn.attributes.state.nodeValue = 'opened';
             downerGrp.style.animation = 'moreIN 0.25s forwards';
