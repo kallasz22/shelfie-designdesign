@@ -10,20 +10,21 @@
 </head>
 <body>
     <header>
-        <img src="/img/MenuClosed.svg" alt="" id="menu-closed" onclick="menu(this, document.querySelector('#menu-bg'), document.querySelector('#menu'))">
+        <img src="/img/MenuClosed.svg" alt="" id="menu-img" onclick="menu(this, document.querySelector('#menu-bg'), document.querySelector('#menu'))">
         <h2>SHELFIE</h2>
 
-        <div id="menu-bg" onclick="menu(document.querySelector('#menu-opened'), document.querySelector('#menu-bg'), document.querySelector('#menu'))">
-            <div id="menu" onclick="event.cancelBubble=true">
+        <div id="menu-bg" onclick="menu(document.querySelector('#menu-img'), document.querySelector('#menu-bg'), document.querySelector('#menu'))">
+            <div id="menu" onclick="event.cancelBubble=true" state="closed">
                 <div id="upper-group">
-                    <button onclick="loadHTML('homepage'); menu(document.querySelector('#menu-opened'), document.querySelector('#menu-bg'), document.querySelector('#menu'))"><img src="/img/House.svg" alt="" class="menu-img">HOMEPAGE</button>
-                    <button onclick="loadHTML('account'); menu(document.querySelector('#menu-opened'), document.querySelector('#menu-bg'), document.querySelector('#menu'))"><img src="/img/Account.svg" alt="" class="menu-img">ACCOUNT</button>
-                    <button onclick="loadHTML('library'); menu(document.querySelector('#menu-opened'), document.querySelector('#menu-bg'), document.querySelector('#menu'))"><img src="/img/Library.svg" alt="" class="menu-img">LIBRARY</button>
-                    <!-- <button onclick="loadHTML('dashboard'); menu(document.querySelector('#menu-opened'), document.querySelector('#menu-bg'), document.querySelector('#menu'))">DASHBOARD</button> -->
+                    <div id="z-bg"></div>
+                    <button onclick="loadHTML('homepage'); menu(document.querySelector('#menu-img'), document.querySelector('#menu-bg'), document.querySelector('#menu'))"><img src="/img/House.svg" alt="" class="menu-img">HOMEPAGE</button>
+                    <button onclick="loadHTML('account'); menu(document.querySelector('#menu-img'), document.querySelector('#menu-bg'), document.querySelector('#menu'))"><img src="/img/Account.svg" alt="" class="menu-img">ACCOUNT</button>
+                    <button onclick="loadHTML('library'); menu(document.querySelector('#menu-img'), document.querySelector('#menu-bg'), document.querySelector('#menu'))"><img src="/img/Library.svg" alt="" class="menu-img">LIBRARY</button>
                 </div>
+                <button onclick="showMore(this, document.querySelector('#downer-group'))" id="more" state="closed">MORE</button>
                 <div id="downer-group">
-                    <button onclick="loadHTML('feedback'); menu(document.querySelector('#menu-opened'), document.querySelector('#menu-bg'), document.querySelector('#menu'))">FEEDBACK</button>
-                    <button onclick="loadHTML('features'); menu(document.querySelector('#menu-opened'), document.querySelector('#menu-bg'), document.querySelector('#menu'))">FEATURES</button>
+                    <button onclick="loadHTML('feedback'); menu(document.querySelector('#menu-img'), document.querySelector('#menu-bg'), document.querySelector('#menu'))"><img src="/img/Feedback.svg" alt="" class="menu-img">FEEDBACK</button>
+                    <button onclick="loadHTML('features'); menu(document.querySelector('#menu-img'), document.querySelector('#menu-bg'), document.querySelector('#menu'))">FEATURES</button>
                     <button>PRIVACY POLICY</button>
                     <button>TERMS OF SERVICE</button>
                     <button onclick="window.open('https://github.com/kallasz22/shelfie')">GITHUB</button>
@@ -35,14 +36,10 @@
         
     </header>
     
-    <div id="render">
-
-    </div>
+    <div id="render"></div>
 </body>
 
-<!-- adott html fájl betöltése ha a gombokra kattintanak (meg minden más is mostmár) -->
 <script>
-    //variables
     const render = document.querySelector('#render');
 
     function loadHTML(page) {
@@ -64,20 +61,38 @@
     }
 
     function menu(img, _bg, menu) {
-        if (img.id == 'menu-closed') {
-            img.id = 'menu-opened';
+        if (menu.attributes.state.nodeValue == 'closed') {
+            menu.attributes.state.nodeValue = 'opened';
             img.src = '/img/MenuOpened.svg';
             _bg.style.display = 'block';
             _bg.style.animation = 'menubgIN 0.25s forwards';
             menu.style.animation = 'menuIN 0.25s forwards';
+            document.querySelector('#downer-group').style.animation = 'moreINs 0.25s forwards';
         } else {
-            img.id = 'menu-closed';
+            menu.attributes.state.nodeValue = 'closed';
             img.src = '/img/MenuClosed.svg';
             _bg.style.animation = 'menubgOUT 0.25s forwards';
             menu.style.animation = 'menuOUT 0.25s forwards';
+            if (document.querySelector('#more').attributes.state.nodeValue == 'opened') {
+                document.querySelector('#more').attributes.state.nodeValue = 'closed';
+                document.querySelector('#downer-group').style.animation = 'moreOUTs 0.25s forwards';
+            }
+            else {
+                document.querySelector('#downer-group').style.animation = 'moreOUTs2 0.25s forwards';
+            }
             setTimeout(function(){
                 _bg.style.display = 'none';
             }, 250);
+        }
+    }
+
+    function showMore(moreBtn, downerGrp) {
+        if (moreBtn.attributes.state.nodeValue == 'closed') {
+            moreBtn.attributes.state.nodeValue = 'opened';
+            downerGrp.style.animation = 'moreIN 0.25s forwards';
+        } else {
+            moreBtn.attributes.state.nodeValue = 'closed';
+            downerGrp.style.animation = 'moreOUT 0.25s forwards';
         }
     }
 
@@ -88,7 +103,6 @@
     }
 </script>
 
-<!-- styling the page -->
 <style>
     :root {
         --main-height: calc(100vh - 3em)
@@ -108,7 +122,6 @@
     header {
         height: 3em;
         background-color: #207a8b;
-        /* background-color: #00b9dc; */
         display: flex;
         align-items: center;
         gap: 10px;
@@ -142,9 +155,8 @@
     #menu {
         height: calc(100vh - 3em);
         background-color: white;
-        position: fixed;
-        top: 3em;
-        left: 0px;
+        position: absolute;
+        top: 0px;
         max-width: 250px;
         left: -250px;
         padding: 10px 0px 0px 0px;
@@ -153,6 +165,8 @@
         justify-content: space-between;
         box-sizing: border-box;
         width: 100%;
+        overflow-y: auto;
+        z-index: 1;
     }
     #menu button {
         width: 100%;
@@ -172,6 +186,12 @@
     }
     .menu-img {
         height: 15pt;
+    }
+    #more {
+        display: none !important;
+    }
+    #z-bg {
+        display: none;
     }
     .header-down-p {
         font-size: 10pt;
@@ -208,6 +228,84 @@
         }
         100% {
             background-color: transparent;
+        }
+    }
+    @media screen and (height < calc(3em + 425px)) {
+        #more {
+            display: flex !important;
+        }
+        #downer-group {
+            position: fixed;
+            top: 3em;
+            left: 0px;
+            background-color: white;
+            max-width: 250px;
+            width: 100%;
+            padding: 10px 0px 10px 0px;
+            overflow-y: scroll;
+            /* display: none; */
+            height: calc(100vh - 3em);
+            box-sizing: border-box;
+            z-index: -2;
+        }
+        #menu {
+            padding: 10px 0px 10px 0px;
+            z-index: 0;
+        }
+        #z-bg {
+            height: calc(100vh - 3em);
+            z-index: -1;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 250px;
+            display: block;
+            background-color: white;
+        }
+        #menu-bg{
+            position: absolute;
+            z-index: -3;
+            display: none;
+        }
+    }
+    @keyframes moreIN {
+        0% {
+            left: 0px;
+        }
+        100% {
+            left: 250px;
+        }
+    }
+    @keyframes moreINs {
+        0% {
+            left: -250px;
+        }
+        100% {
+            left: 0px;
+        }
+    }
+    @keyframes moreOUT {
+        0% {
+            left: 250px;
+        }
+        100% {
+            left: 0px;
+        }
+    }
+    @keyframes moreOUTs {
+        0% {
+            left: 250px;
+        }
+        100% {
+            left: -250px;
+        }
+    }
+    @keyframes moreOUTs2 {
+        0% {
+            left: 0px;
+        }
+        100% {
+            left: -250px;
         }
     }
 </style>
