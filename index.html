@@ -21,10 +21,11 @@
                     <button onclick="loadHTML('account'); menu()"><img src="/img/Account.svg" alt="" class="menu-img">ACCOUNT</button>
                     <button onclick="loadHTML('library'); menu()"><img src="/img/Library.svg" alt="" class="menu-img">LIBRARY</button>
                 </div>
-                <button onclick="showMore()" id="more" state="closed">MORE</button>
+                <button onclick="showMore()" id="more" state="closed">MORE<img src="/img/ArrowRight.svg" alt="" class="menu-img" id="more-arrow">
+                </button>
                 <div id="downer-group">
                     <button onclick="loadHTML('feedback'); menu()"><img src="/img/Feedback.svg" alt="" class="menu-img">FEEDBACK</button>
-                    <button onclick="loadHTML('features'); menu()">FEATURES</button>
+                    <button onclick="loadHTML('features'); menu()"><img src="/img/Features.svg" alt="" class="menu-img"> FEATURES</button>
                     <button>PRIVACY POLICY</button>
                     <button>TERMS OF SERVICE</button>
                     <button onclick="window.open('https://github.com/kallasz22/shelfie')">GITHUB</button>
@@ -114,9 +115,6 @@
 </script>
 
 <style>
-    :root {
-        --main-height: calc(100vh - 3em)
-    }
     @font-face {
         font-family: 'Lexend';
         src: url('/Lexend-Regular.ttf');
@@ -124,9 +122,12 @@
     html * {/*applying font to all html element*/
         font-family: 'Lexend';
     }
+    html {
+        height: 100%;
+    }
     body {
         margin: 0px;
-        height: 100vh;
+        height: 100%;
         background-color: rgba(0, 0, 0, 0.05);
     }
     header {
@@ -150,20 +151,20 @@
     header>img:hover {
         cursor: pointer;
     }
-    main {
-        height: var(--main-height);
+    #render {
+        height: calc(100% - 3em);
     }
     #menu-bg {
         background-color: transparent;
-        height: calc(100vh - 3em);
-        width: 100vw;
+        height: calc(100% - 3em);
+        width: 100%;
         position: fixed;
         top: 3em;
         left: 0px;
         display: none;
     }
     #menu {
-        height: calc(100vh - 3em);
+        height: calc(100%);
         background-color: white;
         position: absolute;
         top: 0px;
@@ -243,6 +244,11 @@
     @media screen and (height < calc(3em + 425px)) {
         #more {
             display: flex !important;
+            justify-content: space-between;
+            padding: 10px 20px 10px 20px !important;
+        }
+        #more[state="opened"] #more-arrow {
+            transform: rotate(180deg);
         }
         #downer-group {
             position: fixed;
