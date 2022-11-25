@@ -10,8 +10,11 @@
 </head>
 <body>
     <header>
-        <img src="/img/MenuClosed.svg" alt="" id="menu-img" onclick="menu()">
-        <h2>SHELFIE</h2>
+        <div id="header-title-grid">
+            <img src="/img/MenuClosed.svg" alt="" id="menu-img" onclick="menu()">
+            <h2>SHELFIE</h2>
+        </div>
+        
 
         <div id="menu-bg" onclick="menu()">
             <div id="menu" onclick="event.cancelBubble=true" state="closed">
@@ -131,6 +134,13 @@
         background-color: rgba(0, 0, 0, 0.05);
     }
     header {
+        height: 100%;
+        width: 100%;
+        position: fixed;
+        top: 0px;
+        left: 0px;
+    }
+    #header-title-grid {
         height: 3em;
         background-color: #207a8b;
         display: flex;
@@ -139,20 +149,26 @@
         padding: 0px 20px;
         position: sticky;
         top: 0px;
+        z-index: 0;
     }
-    header h2 {
+    #header-title-grid h2 {
         margin: 0px;
         color: white;
     }
-    header>img {
+    #header-title-grid>img {
         height: 1.5em;
         filter: invert();
     }
-    header>img:hover {
+    #header-title-grid>img:hover {
         cursor: pointer;
     }
     #render {
         height: calc(100% - 3em);
+        position: fixed;
+        top: 3em;
+        left: 0px;
+        width: 100%;
+        z-index: -4;
     }
     #menu-bg {
         background-color: transparent;
@@ -269,7 +285,7 @@
             z-index: 0;
         }
         #z-bg {
-            height: calc(100vh - 3em);
+            height: calc(100%);
             z-index: -1;
             position: absolute;
             top: 0px;
