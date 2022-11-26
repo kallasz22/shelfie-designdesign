@@ -31,8 +31,8 @@
                 <div id="downer-group">
                     <button onclick="loadHTML('feedback'); menu()"><img src="/img/Feedback.svg" alt="" class="menu-img">FEEDBACK</button>
                     <button onclick="loadHTML('features'); menu()"><img src="/img/Features.svg" alt="" class="menu-img"> FEATURES</button>
-                    <button>PRIVACY POLICY</button>
-                    <button>TERMS OF SERVICE</button>
+                    <!-- <button>PRIVACY POLICY</button> -->
+                    <!-- <button>TERMS OF SERVICE</button> -->
                     <button onclick="window.open('https://github.com/kallasz22/shelfie')">GITHUB</button>
                     <p id="tested-browsers" class="header-down-p">Tested browsers:<br> Mozilla Firefox, Vivaldi</p>
                     <!-- <p id="made" class="header-down-p">Made with 💚 in Hungary.</p> -->
@@ -125,6 +125,9 @@
 </script>
 
 <style>
+    :root {
+        --menu-width: 250px;
+    }
     @font-face {
         font-family: 'Lexend';
         src: url('/Lexend-Regular.ttf');
@@ -140,12 +143,6 @@
         height: 100%;
         background-color: rgba(0, 0, 0, 0.05);
     }
-    /* header:has(#menu[state="opened"]) {
-        height: 100%;
-    }
-    body:has(#menu[state="opened"]) #render{
-        z-index: -1;
-    } */
     #header-title-grid {
         height: 3em;
         background-color: #207a8b;
@@ -191,8 +188,8 @@
         background-color: white;
         position: absolute;
         top: 0px;
-        max-width: 250px;
-        left: -250px;
+        max-width: var(--menu-width);
+        left: calc(var(--menu-width) * -1);
         padding: 10px 0px 0px 0px;
         display: flex;
         flex-direction: column;
@@ -219,6 +216,7 @@
     }
     .menu-img {
         height: 15pt;
+        width: 15pt;
     }
     #more {
         display: none !important;
@@ -233,7 +231,7 @@
     }
     @keyframes menuIN {
         0% {
-            left: -250px;
+            left: calc(var(--menu-width) * -1);
         }
         100% {
             left: 0px;
@@ -244,7 +242,7 @@
             left: 0px;
         }
         100% {
-            left: -250px;
+            left: calc(var(--menu-width) * -1);
         }
     }
     @keyframes menubgIN {
@@ -277,7 +275,7 @@
             top: 3em;
             left: 0px;
             background-color: white;
-            max-width: 250px;
+            max-width: var(--menu-width);
             width: 100%;
             padding: 10px 0px 10px 0px;
             overflow-y: scroll;
@@ -296,7 +294,7 @@
             position: absolute;
             top: 0px;
             left: 0px;
-            width: 250px;
+            width: var(--menu-width);
             display: block;
             background-color: white;
         }
@@ -311,12 +309,12 @@
             left: 0px;
         }
         100% {
-            left: 250px;
+            left: var(--menu-width);
         }
     }
     @keyframes moreINs {
         0% {
-            left: -250px;
+            left: calc(var(--menu-width) * -1);
         }
         100% {
             left: 0px;
@@ -324,7 +322,7 @@
     }
     @keyframes moreOUT {
         0% {
-            left: 250px;
+            left: var(--menu-width);
         }
         100% {
             left: 0px;
@@ -332,10 +330,10 @@
     }
     @keyframes moreOUTs {
         0% {
-            left: 250px;
+            left: var(--menu-width);
         }
         100% {
-            left: -250px;
+            left: calc(var(--menu-width) * -1);
         }
     }
     @keyframes moreOUTs2 {
@@ -343,7 +341,15 @@
             left: 0px;
         }
         100% {
-            left: -250px;
+            left: calc(var(--menu-width) * -1);
+        }
+    }
+    @media screen and (width < 500px) and (height < 475px){
+        #menu, #downer-group, #z-bg {
+            width: var(--menu-width);
+        }
+        :root {
+            --menu-width: 150px;
         }
     }
 </style>
