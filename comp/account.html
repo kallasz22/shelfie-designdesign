@@ -20,7 +20,6 @@
                 document.querySelector(`#${views[i]}`).style.display = 'none';
             }
         }
-        // window.history.pushState({}, "", `${window.location.search.split('&')[0]}&v=${view}`);
         url.changeUrl(`/?${url.page()}&v=${view}`);
         let temp = view[0].toUpperCase() + view.slice(1);
         document.title = `${temp}:Account - SHELFIE`;
@@ -30,13 +29,9 @@
         let searchParams = new URLSearchParams(window.location.search);
         if (searchParams.has('v')) {
             changeView(searchParams.get('v'));
-            console.log('itt');
         } else {
             changeView('sessions');
-            console.log('itt2');
         }
-        console.log(window.location.search);
-        console.log(searchParams);
     }
 </script>
     
