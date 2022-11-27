@@ -10,6 +10,7 @@
     <title>SHELFIE - Book organizer.</title>
 
     <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon">
+    <!-- <link rel="preload" as="font" href="/Lexend-Regular.ttf"> -->
 </head>
 <body>
     <header>
@@ -22,15 +23,15 @@
             <div id="menu" onclick="event.cancelBubble=true" state="closed">
                 <div id="upper-group">
                     <div id="z-bg"></div>
-                    <button onclick="loadHTML('homepage'); menu()"><img src="/img/House.svg" alt="" class="menu-img">HOMEPAGE</button>
-                    <button onclick="loadHTML('account'); menu()"><img src="/img/Account.svg" alt="" class="menu-img">ACCOUNT</button>
-                    <button onclick="loadHTML('library'); menu()"><img src="/img/Library.svg" alt="" class="menu-img">LIBRARY</button>
+                    <button onclick="loadHTML('homepage'); menu()" state="" id="homepage-btn"><img src="/img/House.svg" alt="" class="menu-img">HOMEPAGE</button>
+                    <button onclick="loadHTML('account'); menu()" state="" id="account-btn"><img src="/img/Account.svg" alt="" class="menu-img">ACCOUNT</button>
+                    <button onclick="loadHTML('library'); menu()" state="" id="library-btn"><img src="/img/Library.svg" alt="" class="menu-img">LIBRARY</button>
                 </div>
                 <button onclick="showMore()" id="more" state="closed">MORE<img src="/img/ArrowRight.svg" alt="" class="menu-img" id="more-arrow">
                 </button>
                 <div id="downer-group">
-                    <button onclick="loadHTML('feedback'); menu()"><img src="/img/Feedback.svg" alt="" class="menu-img">FEEDBACK</button>
-                    <button onclick="loadHTML('features'); menu()"><img src="/img/Features.svg" alt="" class="menu-img">FEATURES</button>
+                    <button onclick="loadHTML('feedback'); menu()" state="" id="feedback-btn"><img src="/img/Feedback.svg" alt="" class="menu-img">FEEDBACK</button>
+                    <button onclick="loadHTML('features'); menu()" state="" id="features-btn"><img src="/img/Features.svg" alt="" class="menu-img">FEATURES</button>
                     <!-- <button>PRIVACY POLICY</button> -->
                     <!-- <button>TERMS OF SERVICE</button> -->
                     <button onclick="window.open('https://github.com/kallasz22/shelfie')"><img src="/img/github.svg" alt="" class="menu-img"> GITHUB</button>
@@ -101,12 +102,20 @@
                 url.changeUrl(`/?${page}`);
             }
         }
-        
         if (page == "homepage") {
             document.title = 'SHELFIE - Book organizer.';
         } else {
             const title = page[0].toUpperCase() + page.slice(1);
             document.title = `${title} - SHELFIE`;
+        }
+
+        const opt = ["homepage", "account", "library", "feedback", "features"];
+        for (let i = 0; i < opt.length; i++) {
+            if (opt[i] == page) {
+                document.querySelector(`#${opt[i]}-btn`).attributes.state.nodeValue = "active";
+            } else {
+                document.querySelector(`#${opt[i]}-btn`).attributes.state.nodeValue = "";
+            }
         }
     }
 
@@ -265,6 +274,11 @@
         display: flex;
         align-items: center;
         gap: 5px;
+    }
+    #menu button[state="active"] {
+        border-left: #207a8b solid 5px;
+        padding-left: 15px;
+        background-color: #20798b27;
     }
     #menu button:hover {
         background-color: rgba(0, 0, 0, 0.145);
