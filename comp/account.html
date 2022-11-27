@@ -13,7 +13,7 @@
 </main>
 
 <script id="script">
-    function changeView(view) {
+    function changeView(view, replace) {
         const views = ["sessions", "profile", "privacy"];
         for (let i = 0; i < views.length; i++) {
             if (views[i] == view) {
@@ -25,7 +25,15 @@
 
             }
         }
-        url.changeUrl(`/?${url.page()}&v=${view}`);
+        if (!url.popstate) {
+            if (replace) {
+                url.replaceUrl(`/?${url.page()}&v=${view}`);
+            }
+            else {
+                url.changeUrl(`/?${url.page()}&v=${view}`);
+            }
+        }
+        
         let temp = view[0].toUpperCase() + view.slice(1);
         document.title = `${temp}:Account - SHELFIE`;
     }
@@ -33,9 +41,9 @@
     function initView() {
         let searchParams = new URLSearchParams(window.location.search);
         if (searchParams.has('v')) {
-            changeView(searchParams.get('v'));
+            changeView(searchParams.get('v'), true);
         } else {
-            changeView('sessions');
+            changeView('sessions', true);
         }
     }
 </script>
