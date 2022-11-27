@@ -1,11 +1,13 @@
 <main>
     <div id="title-grid">
-        <button onclick="changeView('sessions')">SESSIONS</button>
-        <button onclick="changeView('profile')">PROFILE</button>
-        <button onclick="changeView('privacy')">PRIVACY</button>
+        <button onclick="changeView('sessions')" id="sessions-btn" state="">SESSIONS</button>
+        <button onclick="changeView('profile')" id="profile-btn" state="">PROFILE</button>
+        <button onclick="changeView('privacy')" id="privacy-btn" state="">PRIVACY</button>
     </div>
 
-    <div id="sessions">sessions</div>
+    <div id="sessions">
+        sessions
+    </div>
     <div id="privacy">privacy</div>
     <div id="profile">profile</div>
 </main>
@@ -16,8 +18,11 @@
         for (let i = 0; i < views.length; i++) {
             if (views[i] == view) {
                 document.querySelector(`#${views[i]}`).style.display = 'block';
+                document.querySelector(`#${views[i]}-btn`).attributes.state.nodeValue = "active";
             } else {
                 document.querySelector(`#${views[i]}`).style.display = 'none';
+                document.querySelector(`#${views[i]}-btn`).attributes.state.nodeValue = "";
+
             }
         }
         url.changeUrl(`/?${url.page()}&v=${view}`);
@@ -54,5 +59,13 @@
         align-items: center;
         justify-content: center;
         gap: 5px;
+    }
+    #title-grid button:hover {
+        background-color: rgba(0, 0, 0, 0.145);
+        cursor: pointer;
+    }
+    #title-grid button[state="active"] {
+        border-bottom: 5px #207a8b solid;
+        background-color: #20798b27;
     }
 </style>
