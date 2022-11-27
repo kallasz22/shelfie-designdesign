@@ -30,10 +30,10 @@
                 </button>
                 <div id="downer-group">
                     <button onclick="loadHTML('feedback'); menu()"><img src="/img/Feedback.svg" alt="" class="menu-img">FEEDBACK</button>
-                    <button onclick="loadHTML('features'); menu()"><img src="/img/Features.svg" alt="" class="menu-img"> FEATURES</button>
+                    <button onclick="loadHTML('features'); menu()"><img src="/img/Features.svg" alt="" class="menu-img">FEATURES</button>
                     <!-- <button>PRIVACY POLICY</button> -->
                     <!-- <button>TERMS OF SERVICE</button> -->
-                    <button onclick="window.open('https://github.com/kallasz22/shelfie')">GITHUB</button>
+                    <button onclick="window.open('https://github.com/kallasz22/shelfie')"><img src="/img/github.svg" alt="" class="menu-img"> GITHUB</button>
                     <p id="tested-browsers" class="header-down-p">Tested browsers:<br> Mozilla Firefox, Vivaldi</p>
                     <!-- <p id="made" class="header-down-p">Made with 💚 in Hungary.</p> -->
                 </div>
@@ -87,7 +87,6 @@
                     document.querySelector('#rScript').innerHTML = document.querySelector('#script').innerHTML;
                     initView();
                     break;
-
                 default:
                     break;
             }
@@ -95,7 +94,10 @@
         if (!url.popstate) {
             if (url.searchParams().get('v') && page == url.page()) {
                 url.changeUrl(`/?${page}&v=${url.searchParams().get('v')}`);
-            } else {
+            } else if (url.page() == '') {
+                url.replaceUrl('?homepage');
+            } 
+            else {
                 url.changeUrl(`/?${page}`);
             }
         }

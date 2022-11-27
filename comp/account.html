@@ -5,11 +5,11 @@
         <button onclick="changeView('privacy')" id="privacy-btn" state="">PRIVACY</button>
     </div>
 
-    <div id="sessions">
+    <div id="sessions" class="content-box">
         sessions
     </div>
-    <div id="privacy">privacy</div>
-    <div id="profile">profile</div>
+    <div id="privacy" class="content-box">privacy</div>
+    <div id="profile" class="content-box">profile</div>
 </main>
 
 <script id="script">
@@ -22,14 +22,13 @@
             } else {
                 document.querySelector(`#${views[i]}`).style.display = 'none';
                 document.querySelector(`#${views[i]}-btn`).attributes.state.nodeValue = "";
-
             }
         }
         if (!url.popstate) {
             if (replace) {
                 url.replaceUrl(`/?${url.page()}&v=${view}`);
             }
-            else {
+            else if (view != url.searchParams().get('v')){
                 url.changeUrl(`/?${url.page()}&v=${view}`);
             }
         }
@@ -52,6 +51,7 @@
     #title-grid {
         display: flex;
         overflow-x: auto;
+        height: 100%;
     }
     #title-grid button {
         max-width: 200px;
@@ -67,6 +67,8 @@
         align-items: center;
         justify-content: center;
         gap: 5px;
+        transition: 0.1s;
+        height: calc(100% + 5px);
     }
     #title-grid button:hover {
         background-color: rgba(0, 0, 0, 0.145);
@@ -75,5 +77,12 @@
     #title-grid button[state="active"] {
         border-bottom: 5px #207a8b solid;
         background-color: #20798b27;
+    }
+    .content-box {
+        position: absolute;
+        height: calc(100% - (45px));
+        width: 100px;
+        top: calc(45px);
+        left: 0px;
     }
 </style>
