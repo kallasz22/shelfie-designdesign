@@ -43,21 +43,54 @@
     </header>
     
     <div id="render"></div>
+    <script defer id="rScript"></script>
 </body>
 
 <script>
-    
+    const url = {
+        changeUrl: function (toWhat) {
+            window.history.pushState({}, "", `${toWhat}`);
+        },
+        url: window.location,
+        searchParams: function () {
+            return new URLSearchParams(window.location.search);
+        },
+        page: function () {
+            return window.location.search.split('&')[0].slice(1);
+        },
+    };
+    const dom = {
+        render: document.querySelector('#render'),
+        menu: document.querySelector('#menu'),
+        menu_bg: document.querySelector('#menu-bg'),
+        menu_img: document.querySelector('#menu-img'),
+        downerGrp: document.querySelector('#downer-group'),
+        moreBtn: document.querySelector('#more'),
+    }
+
     function loadHTML(page) {
-        const render = document.querySelector('#render');
-        render.innerHTML = '<main>Loading...</main>';
+        dom.render.innerHTML = '<main>Loading...</main>';
         fetch(`/comp/${page}.html`)
         .then(function (res) {
             return res.text();
         })
         .then(function (text) {
-            render.innerHTML = text;
+            dom.render.innerHTML = text;
+            switch (page) {
+                case 'account':
+                    document.querySelector('#rScript').innerHTML = document.querySelector('#script').innerHTML;
+                    initView();
+                    break;
+            
+                default:
+                    break;
+            }
         });
-        window.history.pushState({}, "", `?${page}`);
+        if (url.searchParams().get('v') && page == url.page()) {
+            url.changeUrl(`/?${page}&v=${url.searchParams().get('v')}`);
+        } else {
+            url.changeUrl(`/?${page}`);
+        }
         if (page == "homepage") {
             document.title = 'SHELFIE - Book organizer.';
         } else {
@@ -67,60 +100,61 @@
     }
 
     function menu() {
-        const menu = document.querySelector('#menu');
-        const menu_bg = document.querySelector('#menu-bg');
-        const menu_img = document.querySelector('#menu-img');
-
-        const downerGrp = document.querySelector('#downer-group');
-        const moreBtn = document.querySelector('#more');
-
-        const render = document.querySelector('#render');
-
-        if (menu.attributes.state.nodeValue == 'closed') {
-            render.style.zIndex = "-1";
-            menu.attributes.state.nodeValue = 'opened';
-            menu_img.src = '/img/MenuOpened.svg';
-            menu_bg.style.display = 'block';
-            menu_bg.style.animation = 'menubgIN 0.25s forwards';
-            menu.style.animation = 'menuIN 0.25s forwards';
-            downerGrp.style.animation = 'moreINs 0.25s forwards';
+        if (dom.menu.attributes.state.nodeValue == 'closed') {
+            dom.render.style.zIndex = "-1";
+            dom.menu.attributes.state.nodeValue = 'opened';
+            dom.menu_img.src = '/img/MenuOpened.svg';
+            dom.menu_bg.style.display = 'block';
+            dom.menu_bg.style.animation = 'menubgIN 0.25s forwards';
+            dom.menu.style.animation = 'menuIN 0.25s forwards';
+            dom.downerGrp.style.animation = 'moreINs 0.25s forwards';
         } else {
-            
-            menu.attributes.state.nodeValue = 'closed';
-            menu_img.src = '/img/MenuClosed.svg';
-            menu_bg.style.animation = 'menubgOUT 0.25s forwards';
-            menu.style.animation = 'menuOUT 0.25s forwards';
-            if (moreBtn.attributes.state.nodeValue == 'opened') {
-                moreBtn.attributes.state.nodeValue = 'closed';
-                downerGrp.style.animation = 'moreOUTs 0.25s forwards';
+            dom.menu.attributes.state.nodeValue = 'closed';
+            dom.menu_img.src = '/img/MenuClosed.svg';
+            dom.menu_bg.style.animation = 'menubgOUT 0.25s forwards';
+            dom.menu.style.animation = 'menuOUT 0.25s forwards';
+            if (dom.moreBtn.attributes.state.nodeValue == 'opened') {
+                dom.moreBtn.attributes.state.nodeValue = 'closed';
+                dom.downerGrp.style.animation = 'moreOUTs 0.25s forwards';
             }
             else {
-                downerGrp.style.animation = 'moreOUTs2 0.25s forwards';
+                dom.downerGrp.style.animation = 'moreOUTs2 0.25s forwards';
             }
             setTimeout(function(){
-                menu_bg.style.display = 'none';
-                render.style.zIndex = "0";
+                dom.menu_bg.style.display = 'none';
+                dom.render.style.zIndex = "0";
             }, 250);
         }
     }
 
     function showMore() {
-        const downerGrp = document.querySelector('#downer-group');
-        const moreBtn = document.querySelector('#more');
-
-        if (moreBtn.attributes.state.nodeValue == 'closed') {
-            moreBtn.attributes.state.nodeValue = 'opened';
-            downerGrp.style.animation = 'moreIN 0.25s forwards';
+        if (dom.moreBtn.attributes.state.nodeValue == 'closed') {
+            dom.moreBtn.attributes.state.nodeValue = 'opened';
+            dom.downerGrp.style.animation = 'moreIN 0.25s forwards';
         } else {
-            moreBtn.attributes.state.nodeValue = 'closed';
-            downerGrp.style.animation = 'moreOUT 0.25s forwards';
+            dom.moreBtn.attributes.state.nodeValue = 'closed';
+            dom.downerGrp.style.animation = 'moreOUT 0.25s forwards';
         }
     }
 
-    if (location.search.slice(1) == "") {
-        loadHTML('homepage');
+    // if (window.location.search.split('&')[1].slice(1) == "") {
+    //     loadHTML('homepage');
+    // } else {
+    //     loadHTML(window.location.search.split('&')[1].slice(1));
+    // }
+
+    if (window.location.search.split('&').length == 1) {
+        if (window.location.search.slice(1) == "") {
+            loadHTML('homepage');
+        } else {
+            loadHTML(window.location.search.slice(1));
+        }
     } else {
-        loadHTML(location.search.slice(1));
+        if (window.location.search.split('&')[0].slice(1) == "") {
+            loadHTML('homepage');
+        } else {
+            loadHTML(window.location.search.split('&')[0].slice(1));
+        }
     }
 </script>
 

@@ -1,7 +1,63 @@
 <main>
-    hello account
+    <div id="title-grid">
+        <button onclick="changeView('sessions')">SESSIONS</button>
+        <button onclick="changeView('profile')">PROFILE</button>
+        <button onclick="changeView('privacy')">PRIVACY</button>
+    </div>
+
+    <div id="sessions">sessions</div>
+    <div id="privacy">privacy</div>
+    <div id="profile">profile</div>
 </main>
 
-<style>
+<script id="script">
+    function changeView(view) {
+        const views = ["sessions", "profile", "privacy"];
+        for (let i = 0; i < views.length; i++) {
+            if (views[i] == view) {
+                document.querySelector(`#${views[i]}`).style.display = 'block';
+            } else {
+                document.querySelector(`#${views[i]}`).style.display = 'none';
+            }
+        }
+        // window.history.pushState({}, "", `${window.location.search.split('&')[0]}&v=${view}`);
+        url.changeUrl(`/?${url.page()}&v=${view}`);
+        let temp = view[0].toUpperCase() + view.slice(1);
+        document.title = `${temp}:Account - SHELFIE`;
+    }
 
+    function initView() {
+        let searchParams = new URLSearchParams(window.location.search);
+        if (searchParams.has('v')) {
+            changeView(searchParams.get('v'));
+            console.log('itt');
+        } else {
+            changeView('sessions');
+            console.log('itt2');
+        }
+        console.log(window.location.search);
+        console.log(searchParams);
+    }
+</script>
+    
+<style>
+    #title-grid {
+        display: flex;
+        overflow-x: auto;
+    }
+    #title-grid button {
+        max-width: 200px;
+        min-width: 100px;
+        width: 100%;
+        border: unset;
+        background-color: unset;
+        border-radius: unset;
+        padding: 10px 0px 10px 0px;
+        text-align: left;
+        font-size: 12pt;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+    }
 </style>
