@@ -64,8 +64,10 @@
         page: function () {
             return window.location.search.split('&')[0].slice(1);
         },
-        popstate: false
+        popstate: false,
+        latestPage: ""
     };
+    url.latestPage = url.page();
     const dom = {
         render: document.querySelector('#render'),
         menu: document.querySelector('#menu'),
@@ -174,8 +176,20 @@
     window.addEventListener('popstate', function () {
         url.popstate = true;
         console.log('popstate triggered');
-        loadHTML(`${url.page()}`);
+        if (url.latestPage != url.page()) {
+            loadHTML(`${url.page()}`);
+            url.latestPage = url.page();
+        } else {
+            switch (url.page()) {
+                case 'account':
+                    initView();
+                    break;
+                default:
+                    break;
+            }
+        }
         url.popstate = false;
+        
     });
 </script>
 
