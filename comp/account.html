@@ -1,5 +1,5 @@
 <main>
-    <div id="title-grid">
+    <div id="title-grid" class="title-grid">
         <button onclick="changeView('sessions')" id="sessions-btn" state="">SESSIONS</button>
         <button onclick="changeView('profile')" id="profile-btn" state="">PROFILE</button>
         <button onclick="changeView('privacy')" id="privacy-btn" state="">PRIVACY</button>
@@ -8,11 +8,26 @@
     <div id="sessions" class="content-box">sessions</div>
     <div id="profile" class="content-box">profile</div>
     <div id="privacy" class="content-box">privacy</div>
+
+    <div id="sign-in-up">
+        <div id="siu-box">
+            <div id="siu-title-grid" class="title-grid">
+                <button id="sign-in-btn" state="" onclick="changeSiuView('sign-in')">SIGN IN</button>
+                <button id="sign-up-btn" state="" onclick="changeSiuView('sign-up')">SIGN UP</button>
+            </div>
+            <form onsubmit="" id="sign-in" class="siu-form">
+                <h2>SIGN IN</h2>
+            </form>
+            <form onsubmit="" id="sign-up" class="siu-form">
+                <h2>SIGN UP</h2>
+            </form>
+        </div>
+    </div>
 </main>
 
 <script id="script">
     function changeView(view, replace) {
-        const views = ["sessions", "profile", "privacy"];
+        const views = ["sessions", "profile", "privacy", "sign-in", "sign-up"];
         for (let i = 0; i < views.length; i++) {
             if (views[i] == view) {
                 document.querySelector(`#${views[i]}`).style.display = 'block';
@@ -43,15 +58,45 @@
             changeView('sessions', true);
         }
     }
+
+    function changeSiuView(toWhat, replace) {
+        let fromWhat = "";
+        if (toWhat == "sign-in") {
+            fromWhat = "sign-up";
+        } else {
+            fromWhat = "sign-in";
+        }
+
+        if (!url.popstate) {
+            if (replace) {
+                url.replaceUrl(`/?${url.page()}&v=${toWhat}`);
+            }
+            else if (toWhat != url.searchParams().get('v')){
+                url.changeUrl(`/?${url.page()}&v=${toWhat}`);
+            }
+        }
+
+        document.querySelector(`#${toWhat}`).style.display = "block";
+        document.querySelector(`#${fromWhat}`).style.display = "none";
+        document.querySelector(`#${toWhat}-btn`).attributes.state.nodeValue = "active";
+        document.querySelector(`#${fromWhat}-btn`).attributes.state.nodeValue = "";
+        let temp = toWhat[0].toUpperCase() + toWhat.slice(1);
+        document.title = `${temp}:Account - SHELFIE`;
+    }
 </script>
     
 <style>
-    #title-grid {
-        display: flex;
-        overflow-x: auto;
+    main {
         height: 100%;
+        width: 100%;
     }
-    #title-grid button {
+    .title-grid {
+        display: none;
+        /* display: flex; */
+        overflow-x: auto;
+        height: 40px;
+    }
+    .title-grid button {
         max-width: 200px;
         min-width: 100px;
         width: 100%;
@@ -66,13 +111,13 @@
         justify-content: center;
         gap: 5px;
         transition: 0.1s;
-        height: calc(100% + 5px);
+        /* height: 40px; */
     }
-    #title-grid button:hover {
+    .title-grid button:hover {
         background-color: rgba(0, 0, 0, 0.145);
         cursor: pointer;
     }
-    #title-grid button[state="active"] {
+    .title-grid button[state="active"] {
         border-bottom: 5px #207a8b solid;
         background-color: #20798b27;
         padding: 7.5px 0px;
@@ -83,5 +128,46 @@
         width: 100%;
         top: 40px;
         left: 0px;
+
+        display: none !important;
+    }
+
+    /*temp*/
+    #siu-title-grid {
+        display: flex;
+    }
+    /*temp*/
+    #sign-in-up {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    #siu-box {
+        width: 100%;
+        height: 100%;
+        max-width: 400px;
+        max-height: 400px;
+        background-color: white;
+        border: 2px solid #207a8b;
+        border-radius: 10px;
+    }
+    .siu-form {
+        height: calc(100% - 40px);
+        padding: 10px;
+        box-sizing: border-box;
+    }
+    .siu-form h2 {
+        margin: 0px;
+    }
+    @media screen and (width < 400px) {
+        #siu-box {
+            border-radius: 0px;
+        }
+    }@media screen and (height < calc(400px + 3em)) {
+        #siu-box {
+            border-radius: 0px;
+        }
     }
 </style>

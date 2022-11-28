@@ -68,6 +68,7 @@
         latestPage: ""
     };
     url.latestPage = url.page();
+
     const dom = {
         render: document.querySelector('#render'),
         menu: document.querySelector('#menu'),
@@ -75,6 +76,13 @@
         menu_img: document.querySelector('#menu-img'),
         downerGrp: document.querySelector('#downer-group'),
         moreBtn: document.querySelector('#more'),
+    }
+
+    const account = {
+        username: '',
+        token: '',
+        books: [],
+        tokens: []
     }
 
     function loadHTML(page) {
@@ -194,6 +202,9 @@
 </script>
 
 <style>
+    @media (prefers-color-scheme: dark) {
+        /*nothing yet*/
+    }
     :root {
         --menu-width: 250px;
     }
