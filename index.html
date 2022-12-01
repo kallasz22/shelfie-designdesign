@@ -48,6 +48,15 @@
 </body>
 
 <script>
+    let domain = {};
+    fetch('/domain.json')
+    .then(function (res) {
+        return res.json();
+    })
+    .then(function (res) {
+        domain = res;
+    });
+
     const url = {
         changeUrl: function (toWhat) {
             window.history.pushState({}, "", `${toWhat}`);

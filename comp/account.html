@@ -17,9 +17,23 @@
             </div>
             <form onsubmit="" id="sign-in" class="siu-form">
                 <h2>SIGN IN</h2>
+                <label for="username_si">USERNAME</label>
+                <input type="text" name="username_si" id="">
+                <label for="password_si">PASSWORD</label>
+                <input type="password" name="password_si" id="">
+                <button type="submit">SIGN IN <img src="/img/ArrowRight.svg" alt=""></button>
             </form>
             <form onsubmit="" id="sign-up" class="siu-form">
                 <h2>SIGN UP</h2>
+                <label for="username_su">USERNAME</label>
+                <input type="text" name="username_su" id="">
+                <div id="su-pw-div">
+                    <label for="password_su">PASSWORD</label>
+                    <input type="password" name="password_su" id="">
+                    <label for="password_su">PASSWORD AGAIN</label>
+                    <input type="password" name="password_su" id="">
+                </div>
+                <button type="submit">SIGN UP <img src="/img/ArrowRight.svg" alt=""></button>
             </form>
         </div>
     </div>
@@ -30,7 +44,7 @@
         const views = ["sessions", "profile", "privacy", "sign-in", "sign-up"];
         for (let i = 0; i < views.length; i++) {
             if (views[i] == view) {
-                document.querySelector(`#${views[i]}`).style.display = 'block';
+                document.querySelector(`#${views[i]}`).style.display = 'flex';
                 document.querySelector(`#${views[i]}-btn`).attributes.state.nodeValue = "active";
             } else {
                 document.querySelector(`#${views[i]}`).style.display = 'none';
@@ -55,7 +69,10 @@
         if (searchParams.has('v')) {
             changeView(searchParams.get('v'), true);
         } else {
-            changeView('sessions', true);
+            // if (condition) {
+                
+            // }
+            changeView('siu', true);
         }
     }
 
@@ -76,7 +93,7 @@
             }
         }
 
-        document.querySelector(`#${toWhat}`).style.display = "block";
+        document.querySelector(`#${toWhat}`).style.display = "flex";
         document.querySelector(`#${fromWhat}`).style.display = "none";
         document.querySelector(`#${toWhat}-btn`).attributes.state.nodeValue = "active";
         document.querySelector(`#${fromWhat}-btn`).attributes.state.nodeValue = "";
@@ -150,24 +167,74 @@
         max-width: 400px;
         max-height: 400px;
         background-color: white;
-        border: 2px solid #207a8b;
-        border-radius: 10px;
+        /* border: 1px solid #207a8b; */
+        /* box-shadow: #207a8b -10px 10px; */
+        /* border-radius: 10px; */
+        position: absolute;
     }
     .siu-form {
         height: calc(100% - 40px);
         padding: 10px;
         box-sizing: border-box;
+        flex-direction: column;
     }
     .siu-form h2 {
-        margin: 0px;
+        margin: 0px 0px 15px 0px;
     }
-    @media screen and (width < 400px) {
+    .siu-form input {
+        margin: 0px 0px 7.5px 0px;
+        font-size: 12pt;
+        padding: 3px 7px;
+    }
+    .siu-form label {
+        padding: 2px 0px; 
+    }
+    .siu-form button[type="submit"] {
+        border: unset;
+        border-radius: unset;
+        padding: 10px 15px;
+        box-sizing: border-box;
+        font-size: 12pt;
+        background-color: #207a8b;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        transition: 0.1s;
+        max-width: 200px;
+        width: 100%;
+        position: absolute;
+        bottom: 0px;
+        right: 0px;
+    }
+    .siu-form button[type="submit"]:hover {
+        padding-right: 9px;
+        cursor: pointer;
+    }
+    .siu-form button[type="submit"] img {
+        filter: invert();
+        height: 12pt;
+    }
+    #su-pw-div {
+        display: flex;
+        flex-direction: column;
+    }
+    #su-pw-div input {
+        margin: 0px 0px 3px 0px;
+    }
+    @media screen and (width < 500px) {
         #siu-box {
-            border-radius: 0px;
+            /* max-width: none; */
+            /* max-height: none; */
+            box-shadow: none;
         }
-    }@media screen and (height < calc(400px + 3em)) {
+    }
+    @media screen and (height < calc(500px + 3em)) {
         #siu-box {
-            border-radius: 0px;
+            /* max-width: none; */
+            /* max-height: none; */
+            box-shadow: none;
+            
         }
     }
 </style>
