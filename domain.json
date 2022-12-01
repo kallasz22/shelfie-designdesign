@@ -1,4 +1,4 @@
 {
-    "serverdomain":"http://localhost:5000",
-    "origindomain":"http://localhost:5500"
+    "serverdomain":"https://backend.shelfie.tk",
+    "origindomain":"https://designdesign.shelfie.tk"
 }
