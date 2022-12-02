@@ -1,4 +1,4 @@
 {
-    "serverdomain":"http://localhost:5000",
-    "origindomain":"http://localhost:5500"
+    "server":"http://localhost:5000",
+    "origin":"http://localhost:5500"
 }

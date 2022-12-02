@@ -18,14 +18,21 @@
             <form id="sign-in" class="siu-form">
                 <h2>SIGN IN</h2>
                 <label for="username_si">USERNAME</label>
-                <input type="text" name="username_si" id="">
+                <input type="text" name="username_si" id="username_si" state="">
                 <label for="password_si">PASSWORD</label>
-                <input type="password" name="password_si" id="">
+                <input type="password" name="password_si" id="password_si" state="">
                 <div id="rem7">
                     <input type="checkbox" name="remember7_si" id="remember7_si">
                     <label for="remember7_si">REMEMBER ME FOR 7 DAYS</label>
                 </div>
-                <button type="button" selector="sign-btn" onclick="signIn()">SIGN IN <img src="/img/ArrowRight.svg" alt=""></button>
+                <p id="si-error" class="error"></p>
+                <button type="button" selector="sign-btn" onclick="signIn()" id="si-btn" state="">
+                    SIGN IN 
+                    <svg width="41" height="70" viewBox="0 0 41 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 9C1.34315 7.34315 1.34315 4.65685 3 3V3C4.65685 1.34315 7.34315 1.34314 9 3L38 32C39.6568 33.6568 39.6568 36.3431 38 38V38C36.3431 39.6568 33.6568 39.6568 32 38L3 9Z" fill="black"/>
+                        <path d="M32 32C33.6569 30.3431 36.3431 30.3431 38 32V32C39.6569 33.6569 39.6569 36.3431 38 38L9 67C7.34315 68.6569 4.65685 68.6569 3 67V67C1.34315 65.3431 1.34315 62.6569 3 61L32 32Z" fill="black"/>
+                    </svg>
+                </button>
             </form>
             <form id="sign-up" class="siu-form">
                 <h2>SIGN UP</h2>
@@ -37,6 +44,7 @@
                     <label for="password_again_su">PASSWORD AGAIN</label>
                     <input type="password" name="password_again_su" id="">
                 </div>
+                <p id="allowed-chars-p">Usernames and passwords can only contain the letters of the English alphabets, numbers, and the common special characters (+, -, /, *, %, =, (, ), [, ], <, >, #, &, @, {, }, !, ?, ., :, ;, ,).</p>
                 <button type="button" selector="sign-btn" onclick="signUp()">SIGN UP <img src="/img/ArrowRight.svg" alt=""></button>
             </form>
         </div>
@@ -93,8 +101,69 @@
         }
     }
 
+    const siuInputs = {
+        username_si: document.querySelector('#username_si'),
+        password_si: document.querySelector('#password_si')
+    }
+
+    function validateString(text) {
+        const allowedChars = {
+            array: ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "+", "-", "/", "*", "%", "=", "(", ")", "[", "]", "<", ">", "#", "&", "@", "{", "}", "!", "?", ".", ":", ";", ","],
+            in: function (char) {
+                return allowedChars.array.includes(char.toLowerCase());
+            }
+        }
+
+        if (text == "") {
+            return false;
+        }
+
+        let a = text.split('');
+        let i = 0;
+        while (i < a.length && allowedChars.in(a[i])) {
+            i++;
+        }
+        // let i = 1;
+        // while (i < a.length && !(a[i] == ' ' && a[i-1] == ' ')) {
+        //     i++;
+        // }
+        // if (a[0] == ' ' || a[a.length - 1] == ' ') {
+        //     return false;
+        // }
+        return i == a.length;
+    }
+
     function signIn() {
-        console.log('1');
+        if (document.querySelector('#si-btn').attributes.state.nodeValue == "") {
+            if (!validateString(siuInputs.username_si.value) || !validateString(siuInputs.password_si.value)) {/*!siuInputs.username_si.value || !siuInputs.password_si.value || !siuInputs.username_si.value.replace(/\s/g, '').length || !siuInputs.password_si.value.replace(/\s/g, '').length*/
+                siuInputs.username_si.attributes.state.nodeValue = 'wrong';
+                siuInputs.password_si.attributes.state.nodeValue = 'wrong';
+
+                document.querySelector('#si-error').innerText = 'Invalid characters!';
+            } else {
+                siuInputs.username_si.attributes.state.nodeValue = '';
+                siuInputs.password_si.attributes.state.nodeValue = '';
+
+                document.querySelector('#si-error').innerText = '';
+
+                document.querySelector('#si-btn').attributes.state.nodeValue = "disabled";
+                document.querySelector('#si-btn>svg').outerHTML = dom.loadingSVG;
+                document.querySelector('#si-btn>svg').style.animation = '1s loading infinite';
+                // fetch(`${domain.server}/account/signin`, {
+                //     method: 'POST',
+                //     headers: {
+                //         'Content-Type': 'application/x-www-form-urlencoded'
+                //     },
+                //     body: `username_si=${siuInputs.username_si.value}&password_si=${siuInputs.password_si.value}`
+                // })
+                // .then(function (res) {
+                //     return res.json();
+                // })
+                // .then(function (res) {
+                
+                // })
+            }
+        }
     }
 
     function signUp() {
@@ -192,7 +261,7 @@
     .siu-form button[selector="sign-btn"] {
         border: unset;
         border-radius: unset;
-        padding: 10px 15px;
+        padding: 10px 10px 10px 15px;
         box-sizing: border-box;
         font-size: 12pt;
         background-color: #207a8b;
@@ -207,12 +276,23 @@
         margin-top: auto;
     }
     .siu-form button[selector="sign-btn"]:hover {
-        padding-right: 9px;
+        padding-right: 4px;
         cursor: pointer;
     }
-    .siu-form button[selector="sign-btn"] img {
+    .siu-form button[selector="sign-btn"] svg {
         filter: invert();
         height: 12pt;
+        width: 12pt;
+    }
+    .siu-form button[selector="sign-btn"][state="disabled"] {
+        background-color: #20798bb5;
+    }
+    .siu-form button[selector="sign-btn"][state="disabled"]:hover {
+        padding: 10px 10px 10px 15px;
+        cursor: default;
+    }
+    .siu-form input[state="wrong"] {
+        border: 1px red solid;
     }
     #su-pw-div {
         display: flex;
@@ -221,5 +301,13 @@
     }
     #su-pw-div input {
         margin: 0px 0px 3px 0px;
+    }
+    .error {
+        color: red;
+    }
+    #allowed-chars-p {
+        margin: 0px;
+        font-size: 10pt;
+        color: black;
     }
 </style>
