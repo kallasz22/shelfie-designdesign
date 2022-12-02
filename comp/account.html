@@ -25,7 +25,7 @@
                     <input type="checkbox" name="remember7_si" id="remember7_si">
                     <label for="remember7_si">REMEMBER ME FOR 7 DAYS</label>
                 </div>
-                <button type="sign-btn" onclick="signIn()">SIGN IN <img src="/img/ArrowRight.svg" alt=""></button>
+                <button type="button" selector="sign-btn" onclick="signIn()">SIGN IN <img src="/img/ArrowRight.svg" alt=""></button>
             </form>
             <form id="sign-up" class="siu-form">
                 <h2>SIGN UP</h2>
@@ -37,7 +37,7 @@
                     <label for="password_again_su">PASSWORD AGAIN</label>
                     <input type="password" name="password_again_su" id="">
                 </div>
-                <button type="sign-btn" onclick="signUp()">SIGN UP <img src="/img/ArrowRight.svg" alt=""></button>
+                <button type="button" selector="sign-btn" onclick="signUp()">SIGN UP <img src="/img/ArrowRight.svg" alt=""></button>
             </form>
         </div>
     </div>
@@ -47,9 +47,11 @@
     function changeView(view, replace) {
         if (view == "sign-in" || view == "sign-up") {
             document.querySelector('#sign-in-up').style.display = 'flex';
+            document.querySelector('#title-grid').style.display = 'none';
         }
         else {
             document.querySelector('#sign-in-up').style.display = 'none';
+            document.querySelector('#title-grid').style.display = 'flex';
         }
         const views = ["sessions", "profile", "privacy", "sign-in", "sign-up"];
         for (let i = 0; i < views.length; i++) {
@@ -76,15 +78,27 @@
 
     function initView() {
         let searchParams = new URLSearchParams(window.location.search);
-        if (searchParams.has('v')) {
-            changeView(searchParams.get('v'), true);
-        } else {
-            if (cookies.get('token') != "") {
-                changeView('session');
+        if (cookies.get('token') != "") {
+            if (searchParams.has('v')) {
+                changeView(searchParams.get('v'), true);
             } else {
-                changeView('sign-in', true);
+                changeView('sessions');
+            }
+        } else {
+            if (searchParams.has('v')) {
+                changeView(searchParams.get('v'), true);
+            } else {
+                changeView('sign-in');
             }
         }
+    }
+
+    function signIn() {
+        console.log('1');
+    }
+
+    function signUp() {
+        console.log('2')
     }
 </script>
     
@@ -132,7 +146,7 @@
         top: 40px;
         left: 0px;
 
-        display: none !important;
+        display: none;
     }
 
     /*temp*/
@@ -175,7 +189,7 @@
     .siu-form label {
         padding: 2px 0px; 
     }
-    .siu-form button[type="sign-btn"] {
+    .siu-form button[selector="sign-btn"] {
         border: unset;
         border-radius: unset;
         padding: 10px 15px;
@@ -192,11 +206,11 @@
         align-self: flex-end;
         margin-top: auto;
     }
-    .siu-form button[type="sign-btn"]:hover {
+    .siu-form button[selector="sign-btn"]:hover {
         padding-right: 9px;
         cursor: pointer;
     }
-    .siu-form button[type="sign-btn"] img {
+    .siu-form button[selector="sign-btn"] img {
         filter: invert();
         height: 12pt;
     }
