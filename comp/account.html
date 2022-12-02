@@ -12,28 +12,32 @@
     <div id="sign-in-up">
         <div id="siu-box">
             <div id="siu-title-grid" class="title-grid">
-                <button id="sign-in-btn" state="" onclick="changeSiuView('sign-in')">SIGN IN</button>
-                <button id="sign-up-btn" state="" onclick="changeSiuView('sign-up')">SIGN UP</button>
+                <button id="sign-in-btn" state="" onclick="changeView('sign-in')">SIGN IN</button>
+                <button id="sign-up-btn" state="" onclick="changeView('sign-up')">SIGN UP</button>
             </div>
-            <form onsubmit="" id="sign-in" class="siu-form">
+            <form id="sign-in" class="siu-form">
                 <h2>SIGN IN</h2>
                 <label for="username_si">USERNAME</label>
                 <input type="text" name="username_si" id="">
                 <label for="password_si">PASSWORD</label>
                 <input type="password" name="password_si" id="">
-                <button type="submit">SIGN IN <img src="/img/ArrowRight.svg" alt=""></button>
+                <div id="rem7">
+                    <input type="checkbox" name="remember7_si" id="remember7_si">
+                    <label for="remember7_si">REMEMBER ME FOR 7 DAYS</label>
+                </div>
+                <button type="sign-btn" onclick="signIn()">SIGN IN <img src="/img/ArrowRight.svg" alt=""></button>
             </form>
-            <form onsubmit="" id="sign-up" class="siu-form">
+            <form id="sign-up" class="siu-form">
                 <h2>SIGN UP</h2>
                 <label for="username_su">USERNAME</label>
                 <input type="text" name="username_su" id="">
                 <div id="su-pw-div">
                     <label for="password_su">PASSWORD</label>
                     <input type="password" name="password_su" id="">
-                    <label for="password_su">PASSWORD AGAIN</label>
-                    <input type="password" name="password_su" id="">
+                    <label for="password_again_su">PASSWORD AGAIN</label>
+                    <input type="password" name="password_again_su" id="">
                 </div>
-                <button type="submit">SIGN UP <img src="/img/ArrowRight.svg" alt=""></button>
+                <button type="sign-btn" onclick="signUp()">SIGN UP <img src="/img/ArrowRight.svg" alt=""></button>
             </form>
         </div>
     </div>
@@ -41,6 +45,12 @@
 
 <script id="script">
     function changeView(view, replace) {
+        if (view == "sign-in" || view == "sign-up") {
+            document.querySelector('#sign-in-up').style.display = 'flex';
+        }
+        else {
+            document.querySelector('#sign-in-up').style.display = 'none';
+        }
         const views = ["sessions", "profile", "privacy", "sign-in", "sign-up"];
         for (let i = 0; i < views.length; i++) {
             if (views[i] == view) {
@@ -69,36 +79,12 @@
         if (searchParams.has('v')) {
             changeView(searchParams.get('v'), true);
         } else {
-            // if (condition) {
-                
-            // }
-            changeView('siu', true);
-        }
-    }
-
-    function changeSiuView(toWhat, replace) {
-        let fromWhat = "";
-        if (toWhat == "sign-in") {
-            fromWhat = "sign-up";
-        } else {
-            fromWhat = "sign-in";
-        }
-
-        if (!url.popstate) {
-            if (replace) {
-                url.replaceUrl(`/?${url.page()}&v=${toWhat}`);
-            }
-            else if (toWhat != url.searchParams().get('v')){
-                url.changeUrl(`/?${url.page()}&v=${toWhat}`);
+            if (cookies.get('token') != "") {
+                changeView('session');
+            } else {
+                changeView('sign-in', true);
             }
         }
-
-        document.querySelector(`#${toWhat}`).style.display = "flex";
-        document.querySelector(`#${fromWhat}`).style.display = "none";
-        document.querySelector(`#${toWhat}-btn`).attributes.state.nodeValue = "active";
-        document.querySelector(`#${fromWhat}-btn`).attributes.state.nodeValue = "";
-        let temp = toWhat[0].toUpperCase() + toWhat.slice(1);
-        document.title = `${temp}:Account - SHELFIE`;
     }
 </script>
     
@@ -157,7 +143,7 @@
     #sign-in-up {
         height: 100%;
         width: 100%;
-        display: flex;
+        display: none;
         align-items: center;
         justify-content: center;
     }
@@ -167,13 +153,11 @@
         max-width: 400px;
         max-height: 400px;
         background-color: white;
-        /* border: 1px solid #207a8b; */
-        /* box-shadow: #207a8b -10px 10px; */
-        /* border-radius: 10px; */
-        position: absolute;
+        overflow-y: auto;
     }
     .siu-form {
-        height: calc(100% - 40px);
+        height: 360px;/*sadly*/
+        /* height: calc(100% - 40px); */
         padding: 10px;
         box-sizing: border-box;
         flex-direction: column;
@@ -185,11 +169,13 @@
         margin: 0px 0px 7.5px 0px;
         font-size: 12pt;
         padding: 3px 7px;
+        border: #207a8b 1px solid;
+        border-radius: 3px;
     }
     .siu-form label {
         padding: 2px 0px; 
     }
-    .siu-form button[type="submit"] {
+    .siu-form button[type="sign-btn"] {
         border: unset;
         border-radius: unset;
         padding: 10px 15px;
@@ -203,38 +189,23 @@
         transition: 0.1s;
         max-width: 200px;
         width: 100%;
-        position: absolute;
-        bottom: 0px;
-        right: 0px;
+        align-self: flex-end;
+        margin-top: auto;
     }
-    .siu-form button[type="submit"]:hover {
+    .siu-form button[type="sign-btn"]:hover {
         padding-right: 9px;
         cursor: pointer;
     }
-    .siu-form button[type="submit"] img {
+    .siu-form button[type="sign-btn"] img {
         filter: invert();
         height: 12pt;
     }
     #su-pw-div {
         display: flex;
         flex-direction: column;
+        margin-bottom: 10px;
     }
     #su-pw-div input {
         margin: 0px 0px 3px 0px;
-    }
-    @media screen and (width < 500px) {
-        #siu-box {
-            /* max-width: none; */
-            /* max-height: none; */
-            box-shadow: none;
-        }
-    }
-    @media screen and (height < calc(500px + 3em)) {
-        #siu-box {
-            /* max-width: none; */
-            /* max-height: none; */
-            box-shadow: none;
-            
-        }
     }
 </style>
