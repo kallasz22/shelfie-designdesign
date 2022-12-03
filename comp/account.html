@@ -23,7 +23,7 @@
                 <input type="password" name="password_si" id="password_si" state="">
                 <div id="rem7">
                     <input type="checkbox" name="remember7_si" id="remember7_si">
-                    <label for="remember7_si">REMEMBER ME FOR 7 DAYS</label>
+                    <label for="remember7_si" id="rem7_si-label">REMEMBER ME FOR 7 DAYS</label>
                 </div>
                 <p id="si-error" class="error"></p>
                 <button type="button" selector="siu-btn" onclick="signIn()" id="si-btn" state="">
@@ -37,15 +37,15 @@
             <form id="sign-up" class="siu-form">
                 <h2>SIGN UP</h2>
                 <label for="username_su">USERNAME</label>
-                <input type="text" name="username_su" id="">
+                <input type="text" name="username_su" id="username_su" state="">
                 <div id="su-pw-div">
                     <label for="password_su">PASSWORD</label>
-                    <input type="password" name="password_su" id="">
+                    <input type="password" name="password_su" id="password_su" state="">
                     <label for="password_again_su">PASSWORD AGAIN</label>
-                    <input type="password" name="password_again_su" id="">
+                    <input type="password" name="password_again_su" id="password_again_su" state="">
                 </div>
-                <p id="allowed-chars-p">Usernames and passwords can only contain the letters of the English alphabets, numbers, and the common special characters (+, -, /, *, %, =, (, ), [, ], <, >, #, &, @, {, }, !, ?, ., :, ;, ,).</p>
-                <button type="button" selector="siu-btn" onclick="signUp()" id="su-btn">
+                <p class="error" id="su-error"></p>
+                <button type="button" selector="siu-btn" onclick="signUp()" id="su-btn" state="">
                     SIGN UP
                     <svg width="41" height="70" viewBox="0 0 41 70" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M3 9C1.34315 7.34315 1.34315 4.65685 3 3V3C4.65685 1.34315 7.34315 1.34314 9 3L38 32C39.6568 33.6568 39.6568 36.3431 38 38V38C36.3431 39.6568 33.6568 39.6568 32 38L3 9Z" fill="black"/>
@@ -99,7 +99,7 @@
                 changeView('sessions');
             }
         } else {
-            if (searchParams.has('v')) {
+            if (searchParams.has('v') && searchParams.get('v') == 'sign-up') {
                 changeView(searchParams.get('v'), true);
             } else {
                 changeView('sign-in');
@@ -107,14 +107,9 @@
         }
     }
 
-    const siuInputs = {
-        username_si: document.querySelector('#username_si'),
-        password_si: document.querySelector('#password_si')
-    }
-
     function validateString(text) {
         const allowedChars = {
-            array: ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "+", "-", "/", "*", "%", "=", "(", ")", "[", "]", "<", ">", "#", "&", "@", "{", "}", "!", "?", ".", ":", ";", ","],
+            array: ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "+", "-", "/", "*", "%", "=", "(", ")", "[", "]", "<", ">", "#", "&", "@", "{", "}", "!", "?", ".", ":", ";", "_", ","],
             in: function (char) {
                 return allowedChars.array.includes(char.toLowerCase());
             }
@@ -129,51 +124,147 @@
         while (i < a.length && allowedChars.in(a[i])) {
             i++;
         }
-        // let i = 1;
-        // while (i < a.length && !(a[i] == ' ' && a[i-1] == ' ')) {
-        //     i++;
-        // }
-        // if (a[0] == ' ' || a[a.length - 1] == ' ') {
-        //     return false;
-        // }
         return i == a.length;
     }
 
     function signIn() {
-        if (document.querySelector('#si-btn').attributes.state.nodeValue == "") {
-            if (!validateString(siuInputs.username_si.value) || !validateString(siuInputs.password_si.value)) {/*!siuInputs.username_si.value || !siuInputs.password_si.value || !siuInputs.username_si.value.replace(/\s/g, '').length || !siuInputs.password_si.value.replace(/\s/g, '').length*/
-                siuInputs.username_si.attributes.state.nodeValue = 'wrong';
-                siuInputs.password_si.attributes.state.nodeValue = 'wrong';
-
-                document.querySelector('#si-error').innerText = 'Invalid characters!';
-            } else {
-                siuInputs.username_si.attributes.state.nodeValue = '';
-                siuInputs.password_si.attributes.state.nodeValue = '';
-
-                document.querySelector('#si-error').innerText = '';
-
-                document.querySelector('#si-btn').attributes.state.nodeValue = "disabled";
-                document.querySelector('#si-btn>svg').outerHTML = dom.loadingSVG;
-                document.querySelector('#si-btn>svg').style.animation = '1s loading infinite';
-                // fetch(`${domain.server}/account/signin`, {
-                //     method: 'POST',
-                //     headers: {
-                //         'Content-Type': 'application/x-www-form-urlencoded'
-                //     },
-                //     body: `username_si=${siuInputs.username_si.value}&password_si=${siuInputs.password_si.value}`
-                // })
-                // .then(function (res) {
-                //     return res.json();
-                // })
-                // .then(function (res) {
-                
-                // })
-            }
+        let smthWrong = false;
+        if (document.querySelector('#si-btn').attributes.state.nodeValue != "") {
+            console.log('already loading');
+            return;
         }
+        if (!validateString(document.querySelector('#username_si').value)) {
+            document.querySelector('#username_si').attributes.state.nodeValue = 'wrong';
+            document.querySelector('#si-error').innerText = 'Invalid character(s) or empty field(s)!';
+            smthWrong = true;
+        } else {
+            document.querySelector('#username_si').attributes.state.nodeValue = '';
+        }
+        if (!validateString(document.querySelector('#password_si').value)) {
+            document.querySelector('#password_si').attributes.state.nodeValue = 'wrong';
+            document.querySelector('#si-error').innerText = 'Invalid character(s) or empty field(s)!';
+            smthWrong = true;
+        } else {
+            document.querySelector('#password_si').attributes.state.nodeValue = '';
+        }
+        if (smthWrong) {
+            return;
+        }
+        else {
+            document.querySelector('#si-error').innerText = '';
+        }
+        document.querySelector('#si-btn').attributes.state.nodeValue = "disabled";
+        document.querySelector('#si-btn>svg').outerHTML = dom.loadingSVG;
+        document.querySelector('#si-btn>svg').style.animation = '1s loading infinite linear';
+        
+        fetch(`${domain.server}/account/signin`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `username_si=${document.querySelector('#username_si').value}&password_si=${document.querySelector('#password_si').value}`
+        })
+        .then(function (res) {
+            return res.json();
+        })
+        .then(function (res) {
+            document.querySelector('#si-error').innerText = res.message;
+
+            document.querySelector('#si-btn').attributes.state.nodeValue = "";
+            document.querySelector('#si-btn>svg').outerHTML = dom.arrowSVG;
+            document.querySelector('#si-btn>svg').style.animation = '';
+
+            if (res.token) {
+                cookies.set('token', res.token, 7);
+
+                changeView('sessions');
+
+                document.querySelector('#username_si').value = "";
+                document.querySelector('#password_si').value = "";
+            }
+        })
     }
 
     function signUp() {
-        console.log('2')
+        let smthWrong = false;
+        if (document.querySelector('#su-btn').attributes.state.nodeValue != "") {
+            console.log('already loading');
+            return;
+        }
+        if (!validateString(document.querySelector('#username_su').value)) {
+            document.querySelector('#username_su').attributes.state.nodeValue = 'wrong';
+            document.querySelector('#su-error').style.fontSize = '10pt';
+            document.querySelector('#su-error').style.margin = '0px';
+            document.querySelector('#su-error').innerText = 'Usernames and passwords can only contain the letters of the English alphabets, numbers, and the common special characters (+, -, /, *, %, =, (, ), [, ], <, >, #, &, @, {, }, !, ?, ., :, ;, _, ,)!';
+            if (document.querySelector('#username_su').value == "") {
+                document.querySelector('#su-error').style.fontSize = '12pt';
+                document.querySelector('#su-error').innerText = 'Empty field(s)!';
+            }
+            smthWrong = true;
+        } else {
+            document.querySelector('#username_su').attributes.state.nodeValue = '';
+        }
+        if (!validateString(document.querySelector('#password_su').value)) {
+            document.querySelector('#password_su').attributes.state.nodeValue = 'wrong';
+            document.querySelector('#su-error').style.fontSize = '10pt';
+            document.querySelector('#su-error').style.margin = '0px';
+            document.querySelector('#su-error').innerText = 'Usernames and passwords can only contain the letters of the English alphabets, numbers, and the common special characters (+, -, /, *, %, =, (, ), [, ], <, >, #, &, @, {, }, !, ?, ., :, ;, _, ,)!';
+            if (document.querySelector('#password_su').value == "") {
+                document.querySelector('#su-error').style.fontSize = '12pt';
+                document.querySelector('#su-error').innerText = 'Empty field(s)!';
+            }
+            smthWrong = true;
+        } else {
+            document.querySelector('#password_su').attributes.state.nodeValue = '';
+        }
+        
+        if (smthWrong) {
+            return;
+        }
+        else {
+            document.querySelector('#su-error').innerText = '';
+            if (document.querySelector('#password_again_su').value != document.querySelector('#password_su').value) {
+                document.querySelector('#password_su').attributes.state.nodeValue = 'wrong';
+                document.querySelector('#password_again_su').attributes.state.nodeValue = 'wrong';
+                document.querySelector('#su-error').style.fontSize = '12pt';
+                document.querySelector('#su-error').style.margin = 'unset';
+                document.querySelector('#su-error').innerText = 'The 2 given passwords are not the same!';
+                return;
+            }
+            else {
+                document.querySelector('#password_su').attributes.state.nodeValue = '';
+                document.querySelector('#password_again_su').attributes.state.nodeValue = '';
+            }
+        }
+        document.querySelector('#su-btn').attributes.state.nodeValue = "disabled";
+        document.querySelector('#su-btn>svg').outerHTML = dom.loadingSVG;
+        document.querySelector('#su-btn>svg').style.animation = '1s loading infinite linear';
+
+        fetch(`${domain.server}/account/signup`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `username_su=${document.querySelector('#username_su').value}&password_su=${document.querySelector('#password_su').value}`
+        })
+        .then(function (res) {
+            return res.json();
+        })
+        .then(function (res) {
+            document.querySelector('#su-error').innerText = res.message;
+
+            document.querySelector('#su-btn').attributes.state.nodeValue = "";
+            document.querySelector('#su-btn>svg').outerHTML = dom.arrowSVG;
+            document.querySelector('#su-btn>svg').style.animation = '';
+
+            if (res.changeView) {
+                changeView(res.changeView);
+
+                document.querySelector('#username_su').value = "";
+                document.querySelector('#password_su').value = "";
+                document.querySelector('#password_again_su').value = "";
+            }
+        });
     }
 </script>
     
@@ -314,6 +405,8 @@
     #allowed-chars-p {
         margin: 0px;
         font-size: 10pt;
-        color: black;
+    }
+    #rem7_si-label, #remember7_si:hover {
+        cursor: pointer;
     }
 </style>

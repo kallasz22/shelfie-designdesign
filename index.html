@@ -113,22 +113,13 @@
 
     }
 
-    const account = {
-        username: '',
-        token: '',
-        books: [],
-        tokens: []
-    }
-
     function loadHTML(page) {
         dom.render.innerHTML = '<main>Loading...</main>';
         fetch(`/comp/${page}.html`)
         .then(function (res) {
-            console.log(res);
             return res.text();
         })
         .then(function (text) {
-            console.log(text);
             dom.render.innerHTML = text;
             switch (page) {
                 case 'account':
@@ -490,19 +481,10 @@
     }
     @keyframes loading {
         0% {
-            rotate: 0deg;
-        }
-        25% {
-            rotate: 90deg;
-        }
-        50% {
-            rotate: 180deg;
-        }
-        75% {
-            rotate: 270deg;
+            transform: rotate(0deg);
         }
         100% {
-            rotate: 360deg;
+            transform: rotate(360deg);
         }
     }
 </style>
