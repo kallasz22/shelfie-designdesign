@@ -26,7 +26,7 @@
                     <label for="remember7_si">REMEMBER ME FOR 7 DAYS</label>
                 </div>
                 <p id="si-error" class="error"></p>
-                <button type="button" selector="sign-btn" onclick="signIn()" id="si-btn" state="">
+                <button type="button" selector="siu-btn" onclick="signIn()" id="si-btn" state="">
                     SIGN IN 
                     <svg width="41" height="70" viewBox="0 0 41 70" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M3 9C1.34315 7.34315 1.34315 4.65685 3 3V3C4.65685 1.34315 7.34315 1.34314 9 3L38 32C39.6568 33.6568 39.6568 36.3431 38 38V38C36.3431 39.6568 33.6568 39.6568 32 38L3 9Z" fill="black"/>
@@ -45,7 +45,13 @@
                     <input type="password" name="password_again_su" id="">
                 </div>
                 <p id="allowed-chars-p">Usernames and passwords can only contain the letters of the English alphabets, numbers, and the common special characters (+, -, /, *, %, =, (, ), [, ], <, >, #, &, @, {, }, !, ?, ., :, ;, ,).</p>
-                <button type="button" selector="sign-btn" onclick="signUp()">SIGN UP <img src="/img/ArrowRight.svg" alt=""></button>
+                <button type="button" selector="siu-btn" onclick="signUp()" id="su-btn">
+                    SIGN UP
+                    <svg width="41" height="70" viewBox="0 0 41 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 9C1.34315 7.34315 1.34315 4.65685 3 3V3C4.65685 1.34315 7.34315 1.34314 9 3L38 32C39.6568 33.6568 39.6568 36.3431 38 38V38C36.3431 39.6568 33.6568 39.6568 32 38L3 9Z" fill="black"/>
+                        <path d="M32 32C33.6569 30.3431 36.3431 30.3431 38 32V32C39.6569 33.6569 39.6569 36.3431 38 38L9 67C7.34315 68.6569 4.65685 68.6569 3 67V67C1.34315 65.3431 1.34315 62.6569 3 61L32 32Z" fill="black"/>
+                    </svg>
+                </button>
             </form>
         </div>
     </div>
@@ -258,7 +264,7 @@
     .siu-form label {
         padding: 2px 0px; 
     }
-    .siu-form button[selector="sign-btn"] {
+    .siu-form button [selector="siu-btn"] {
         border: unset;
         border-radius: unset;
         padding: 10px 10px 10px 15px;
@@ -275,19 +281,19 @@
         align-self: flex-end;
         margin-top: auto;
     }
-    .siu-form button[selector="sign-btn"]:hover {
+    .siu-form button[selector="siu-btn"]:hover {
         padding-right: 4px;
         cursor: pointer;
     }
-    .siu-form button[selector="sign-btn"] svg {
+    .siu-form button[selector="siu-btn"] svg {
         filter: invert();
         height: 12pt;
         width: 12pt;
     }
-    .siu-form button[selector="sign-btn"][state="disabled"] {
+    .siu-form button[selector="siu-btn"][state="disabled"] {
         background-color: #20798bb5;
     }
-    .siu-form button[selector="sign-btn"][state="disabled"]:hover {
+    .siu-form button[selector="siu-btn"][state="disabled"]:hover {
         padding: 10px 10px 10px 15px;
         cursor: default;
     }

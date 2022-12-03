@@ -124,9 +124,11 @@
         dom.render.innerHTML = '<main>Loading...</main>';
         fetch(`/comp/${page}.html`)
         .then(function (res) {
+            console.log(res);
             return res.text();
         })
         .then(function (text) {
+            console.log(text);
             dom.render.innerHTML = text;
             switch (page) {
                 case 'account':
