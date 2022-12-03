@@ -93,7 +93,7 @@
     function initView() {
         let searchParams = new URLSearchParams(window.location.search);
         if (cookies.get('token') != "") {
-            if (searchParams.has('v')) {
+            if (searchParams.has('v') && searchParams.get('v') != 'sign-up' && searchParams.get('v') != 'sign-in') {
                 changeView(searchParams.get('v'), true);
             } else {
                 changeView('sessions');
@@ -175,7 +175,11 @@
             document.querySelector('#si-btn>svg').style.animation = '';
 
             if (res.token) {
-                cookies.set('token', res.token, 7);
+                if (document.querySelector('#remember7_si').checked) {
+                    cookies.set('token', res.token, 7);
+                } else {
+                    cookies.set('token', res.token, "session");
+                }
 
                 changeView('sessions');
 
@@ -266,6 +270,8 @@
             }
         });
     }
+
+
 </script>
     
 <style>
